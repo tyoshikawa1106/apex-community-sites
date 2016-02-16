@@ -28,7 +28,7 @@
                     <div class="slds-form-element">
                         <label class="slds-form-element__label" for="sample1">パスワード</label>
                         <div class="slds-form-element__control">
-                            <apex:inputSecret value="{!password}" styleClass="slds-input" html-placeholder="Your Pasword" />
+                            <apex:inputSecret value="{!password}" styleClass="slds-input" html-placeholder="Your Password" />
                         </div>
                         <div class="slds-form-element__help"></div>
                     </div>
