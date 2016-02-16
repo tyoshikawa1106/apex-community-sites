@@ -1,0 +1,54 @@
+<apex:page docType="html-5.0" showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false">
+    <div>
+        <div class="slds-m-around--small">
+            <!-- 入力フィールド -->
+            <form name="inputForm" novalidate="true" class="slds-m-horizontal--small">
+                <!-- メッセージ -->
+                <div class="slds-box slds-theme--info slds-m-bottom--small" ng-show="!!errorMessages.length">
+                    <p><span ng-bind="errorMessages"></span></p>
+                </div>
+                <!-- タイトル -->
+                <div class="slds-form-element slds-is-required" ng-class="{'slds-has-error': inputForm.title.$invalid && inputForm.title.$dirty}">
+                    <label class="slds-form-element__label" for="title">{!$ObjectType.DiaryReport__c.Fields.Title__c.Label}</label>
+                    <div class="slds-form-element__control">
+                        <input name="title" ng-model="wrapper.DiaryReport__c.Title__c" class="slds-input" type="text" required="true" ng-maxlength="{!$ObjectType.DiaryReport__c.Fields.Title__c.Length}" />
+                        <div ng-messages="inputForm.title.$error" ng-if="inputForm.title.$dirty">
+                            <div ng-message="required" class="slds-form-element__help">値を入力してください</div>
+                            <div ng-message="maxlength" class="slds-form-element__help">文字数が上限を超えました</div>
+                        </div>
+                        <div class="slds-form-element__help"></div>
+                    </div>
+                </div>
+                <!-- 日付 -->
+                <div class="slds-form-element slds-is-required" ng-class="{'slds-has-error': inputForm.date.$invalid && inputForm.date.$dirty}">
+                    <label class="slds-form-element__label" for="date">{!$ObjectType.DiaryReport__c.Fields.Date__c.Label}</label>
+                    <div class="slds-form-element__control">
+                        <input name="date" ng-model="wrapper.Date__c" class="slds-input" type="date" required="true" />
+                        <div ng-messages="inputForm.date.$error" ng-if="inputForm.date.$dirty">
+                            <div ng-message="required" class="slds-form-element__help">値を入力してください</div>
+                            <div ng-message="date" class="slds-form-element__help">不正な形式です</div>
+                        </div>
+                        <div class="slds-form-element__help"></div>
+                    </div>
+                </div>
+                <!-- 作業内容 -->
+                <div class="slds-form-element" ng-class="{'slds-has-error': inputForm.description.$invalid && inputForm.description.$dirty}">
+                    <label class="slds-form-element__label" for="date">{!$ObjectType.DiaryReport__c.Fields.Description__c.Label}</label>
+                    <div class="slds-form-element__control">
+                        <textarea name="description" ng-model="wrapper.DiaryReport__c.Description__c" class="slds-textarea"
+                                        ng-maxlength="{!$ObjectType.DiaryReport__c.Fields.Description__c.Length}" rows="10" />
+                        <div ng-messages="inputForm.description.$error" ng-if="inputForm.description.$dirty">
+                            <div ng-message="maxlength" class="slds-form-element__help">文字数が上限を超えました</div>
+                        </div>
+                        <div class="slds-form-element__help"></div>
+                    </div>
+                </div>
+                <!-- ボタン -->
+                <div class="slds-m-top--small">
+                    <button ng-click="save($event)" class="slds-button slds-button--brand" ng-disabled="inputForm.$invalid || isLocked">保存</button>
+                    <a href="#/" class="slds-button slds-button--neutral">キャンセル</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</apex:page>

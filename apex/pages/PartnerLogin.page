@@ -1,0 +1,43 @@
+<apex:page controller="PartnerLoginController" showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false" action="{!init}" id="pg">
+    <apex:composition template="SitesTemplate">
+        <!-- Title -->
+        <apex:define name="title">
+            <apex:outputText value="ログイン" />
+        </apex:define>
+    
+        <!-- Body -->
+        <apex:define name="body">
+            <c:SitesSubHeader title="ログイン" />
+            <apex:form id="form">
+                <div class="slds-box slds-m-around--xx-large">
+                    <!-- メッセージ -->
+                    <apex:outputPanel rendered="{!errorMessage != ''}">
+                        <div class="slds-box slds-theme--info slds-m-bottom--small">
+                            <p><apex:outputText value="{!errorMessage}" /></p>
+                        </div>
+                    </apex:outputPanel>
+                    <!-- ユーザ名 -->
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="sample1">ユーザ名</label>
+                        <div class="slds-form-element__control">
+                            <apex:inputText value="{!userId}" styleClass="slds-input" html-placeholder="Your User Name" />
+                        </div>
+                        <div class="slds-form-element__help"></div>
+                    </div>
+                    <!-- パスワード -->
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="sample1">パスワード</label>
+                        <div class="slds-form-element__control">
+                            <apex:inputSecret value="{!password}" styleClass="slds-input" html-placeholder="Your Pasword" />
+                        </div>
+                        <div class="slds-form-element__help"></div>
+                    </div>
+                    <!-- ログインボタン -->
+                    <div class="slds-m-top--medium">
+                        <apex:commandLink value="ログイン" action="{!doLogin}" styleClass="slds-button slds-button--brand" reRender="form" />
+                    </div>
+                </div>
+            </apex:form>
+        </apex:define>
+    </apex:composition>
+</apex:page>

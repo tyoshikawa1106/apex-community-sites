@@ -1,0 +1,183 @@
+<apex:page >
+    <script type="text/javascript">
+        var app = angular.module("Services", [])
+
+        // 共通変数
+        app.factory("fieldHelper", function() {
+            function getWrapper() {
+                return {
+                    DiaryReport__c : {
+                        Id : null,
+                        Title__c : '',
+                        Date__c : null,
+                        Description__c : ''
+                    },
+                    Date__c : null
+                };
+            }
+
+            return {
+                getWrapper: function() {
+                    return getWrapper();
+                }
+            }; 
+        });
+
+        // DiaryReportListServices
+        app.factory("DiaryReportListServices", ["$rootScope", function($rootScope) {
+            // 初期処理
+            function init(scope) {
+                // 日報情報の初期値取得
+                getDefaultDiaryReportsByApex(scope);
+            }
+
+            // 日報情報の初期値取得
+            function getDefaultDiaryReportsByApex(scope) {
+                DiaryReportController.getDiaryReports(function(results, event) {
+                    if(event.status) {
+                        // 日報情報に値をセット
+                        for (var i = 0; i < results.length; i++) {
+                            (function(result) {
+                                scope.diaryReportList[i] = {
+                                    Id : result.Id,
+                                    Title__c : result.Title__c,
+                                    Date__c : result.Date__c
+                                };  
+                            })(results[i]);
+                        }
+                        // Viewに反映
+                        $rootScope.$apply();
+                    } else {
+                        alert(event.message);
+                    }
+                });
+            }
+
+            // 日報情報の削除
+            function deleteDiaryReportByApex(scope, recordId, index) {
+                DiaryReportController.deleteDiaryReport(recordId, function(result, event) {
+                    if(event.status) {
+                        // リストから除外
+                        scope.diaryReportList.splice(index, 1);
+                        // ロック解除
+                        scope.isLocked = false;
+                        // Viewに反映
+                        $rootScope.$apply();
+                    } else {
+                        alert(event.message);
+                    }
+                });
+            }
+
+            return {
+                init: function(scope) {
+                    return init(scope);
+                },
+                delete: function(scope, recordId, index) {
+                    return deleteDiaryReportByApex(scope, recordId, index);
+                }
+            };
+        }]);
+
+        // DiaryReportServices
+        app.factory("DiaryReportServices", ["$rootScope", function($rootScope) {
+            // 初期処理
+            function init(scope, recordId) {
+                if (recordId) {
+                    getDefaultDiaryReportByApex(scope, recordId);
+                }
+            }
+
+            // 日報情報の初期値取得
+            function getDefaultDiaryReportByApex(scope, recordId) {
+                DiaryReportController.getDiaryReport(recordId, function(result, event) {
+                    if(event.status) {
+                        // 結果をセット
+                        scope.wrapper = setDiaryReport(scope.wrapper, result);
+                        // Viewに反映
+                        $rootScope.$apply();
+                    } else {
+                        alert(event.message);
+                    }
+                });
+            }
+
+            // 日報オブジェクトに値をセット
+            function setDiaryReport(wrapper, result) {
+                if (result) {
+                    if (result.Id) {
+                        wrapper.DiaryReport__c.Id = result.Id;
+                    }
+                    if (result.Title__c) {
+                        wrapper.DiaryReport__c.Title__c = result.Title__c;
+                    }
+                    if (result.Date__c) {
+                        wrapper.Date__c = moment(result.Date__c).toDate();
+                    }
+                    if (result.Description__c) {
+                        wrapper.DiaryReport__c.Description__c = result.Description__c;
+                    }
+                }
+                return wrapper;
+            }
+
+            // 日報情報の削除
+            function deleteDiaryReportByApex(scope, recordId) {
+                DiaryReportController.deleteDiaryReport(recordId, function(result, event) {
+                    if(event.status) {
+                        location.href = "#/";
+                    } else {
+                        alert(event.message);
+                    }
+                });
+            }
+
+            // 保存処理
+            function save(scope) {
+                // 日付の変換
+                if (scope.wrapper.Date__c) {
+                    scope.wrapper.DiaryReport__c.Date__c = moment(scope.wrapper.Date__c).add(getTzOff(), 'hours').toDate().getTime();
+                }
+                // 日報情報の登録
+                saveDiaryReportByApex(scope);
+            }
+
+            // 日報情報の登録
+            function saveDiaryReportByApex(scope) {
+                DiaryReportController.saveDiaryReport(scope.wrapper.DiaryReport__c, function(result, event) {
+                    if(event.status) {
+                        if (result.errorMessages.length > 0) {
+                            scope.errorMessages = result.errorMessages;
+                        } else {
+                            // 参照ページに遷移
+                            location.href = "#/view/" + result.recordId;
+                        }
+                    } else {
+                        alert(event.message);
+                    }
+                    scope.isLocked = false;
+                    $rootScope.$apply();
+                });
+            }
+
+            // 時差取得
+            function getTzOff() {
+                var date = new Date();
+                var result = ( date.getHours() - date.getUTCHours() + 24 ) % 24;
+                return result;
+            };
+
+            return {
+                init: function(scope, recordId) {
+                    return init(scope, recordId);
+                },
+                delete: function(scope, recordId) {
+                    return deleteDiaryReportByApex(scope, recordId);
+                },
+                save: function(scope) {
+                    return save(scope);
+                }
+            };
+        }]);
+    </script>
+</apex:page>

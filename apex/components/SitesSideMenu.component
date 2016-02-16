@@ -1,0 +1,14 @@
+<apex:component >
+    <ul class="slds-list--vertical slds-has-dividers">
+        <li class="slds-list__item nav-list"><a href="{!$Page.Home}">ホーム</a></li>
+        <li class="slds-list__item nav-list"><a href="{!$Page.DiaryReport}">日報</a></li>
+        <li class="slds-list__item nav-list"><a href="{!$Page.WorkTime}">勤怠入力</a></li>
+        <li class="slds-list__item nav-list"><a href="{!$Page.LeaveRequest}">休暇申請</a></li>
+        <li class="slds-list__item nav-list"><a href="{!$Page.BeingLateLeaveEarly}">遅刻・早退連絡</a></li>
+        <li class="slds-list__item nav-list">
+            <apex:outputLink value="{!$Site.Prefix}/secur/logout.jsp" rendered="{!NOT(ISPICKVAL($User.UserType,'Guest'))}">
+                <apex:outputText value="{!$Label.site.logout}" />
+            </apex:outputLink>
+        </li>
+    </ul>
+</apex:component>

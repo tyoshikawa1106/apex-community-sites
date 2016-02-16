@@ -1,0 +1,23 @@
+<apex:page controller="BeingLateLeaveEarlyController" showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false" action="{!init}" id="pg">
+    <apex:composition template="SitesTemplate">
+        <!-- Title -->
+        <apex:define name="title">
+            <apex:outputText value="遅刻・早退連絡" />
+        </apex:define>
+    
+        <!-- Body -->
+        <apex:define name="body">
+            <!-- Body -->
+            <div class="slds-grid slds-wrap">
+                <!-- Navi -->
+                <nav class="slds-col slds-size--2-of-12 sideMenu">
+                    <c:SitesSideMenu />
+                </nav>
+                <!-- Main -->
+                <main class="slds-col slds-size--10-of-12">
+                    <c:SitesSubHeader title="遅刻・早退連絡" />
+                </main>
+            </div>
+        </apex:define>
+    </apex:composition>
+</apex:page>

@@ -1,0 +1,8 @@
+<apex:component >
+    <apex:attribute name="title" type="String" description="Sub Header Title" />
+    <div class="slds-p-around--large partialsHeader">
+        <h1 class="slds-text-heading--medium">
+            <apex:outputText value="{!title}" />
+        </h1>
+    </div>
+</apex:component>

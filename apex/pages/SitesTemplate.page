@@ -1,0 +1,36 @@
+<apex:page showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false" id="pg">
+    <html lang="ja">
+        <head>
+            <!-- Title -->
+            <title>
+                <apex:insert name="title" />
+            </title>
+            <!-- Meta -->
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <!-- AngularJS -->
+            <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular.min.js" />
+            <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-route.js" />
+            <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-messages.js" />
+            <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js" />
+            <!-- Lightning Design System -->
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS0122, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+            <!-- Common CSS -->
+            <apex:include pageName="SitesCommonCss" />
+        </head>
+        <body>
+            <div class="slds" id="vf-page">
+                <!-- Header -->
+                <apex:insert name="header">
+                    <c:SitesHeader />
+                </apex:insert>
+                <!-- Body -->
+                <apex:insert name="body"/>
+                <!-- Footer -->
+                <apex:insert name="footer">
+                    <!-- <c:SitesFooter /> -->
+                </apex:insert>
+            </div>
+        </body>
+    </html>
+</apex:page>

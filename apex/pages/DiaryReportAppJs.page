@@ -1,0 +1,25 @@
+<apex:page >
+    <script type="text/javascript">
+        angular.module("myApp", ["Controllers", "ngRoute", "ngMessages"]).config(["$routeProvider", function($routeProvider){
+            $routeProvider.when("/", {
+                controller : "DiaryReportListCtrl",
+                templateUrl : "/apex/DiaryReportList"
+            }).
+            when("/edit", {
+                controller : "DiaryReportEditCtrl",
+                templateUrl : "/apex/DiaryReportEdit"
+            }).
+            when("/edit/:id", {
+                controller : "DiaryReportEditCtrl",
+                templateUrl : "/apex/DiaryReportEdit"
+            }).
+            when("/view/:id", {
+                controller : "DiaryReportViewCtrl",
+                templateUrl : "/apex/DiaryReportView"
+            }).
+            otherwise({
+                redirectTo: "/"
+            });
+        }]);
+    </script>
+</apex:page>

@@ -1,0 +1,9 @@
+<apex:component >
+    <header class="site-masthead slds-grid slds-page-header slds-theme--inverse commonHeader">
+        <div class="slds-media__body slds-p-top--x-small">
+            <a href="{!$Page.Home}" class="headerLink">
+              <h1 class="slds-text-heading--large">Force.com パートナーサイト</h1>
+            </a>
+        </div>
+    </header>
+</apex:component>

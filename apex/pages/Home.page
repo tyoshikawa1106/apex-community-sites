@@ -1,0 +1,43 @@
+<apex:page controller="HomeController" showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false" action="{!init}" id="pg">
+    <apex:composition template="SitesTemplate">
+        <!-- Title -->
+        <apex:define name="title">
+            <apex:outputText value="ホーム" />
+        </apex:define>
+    
+        <!-- Body -->
+        <apex:define name="body">
+            <!-- Body -->
+            <div class="slds-grid slds-wrap">
+                <!-- Navi -->
+                <nav class="slds-col slds-size--2-of-12 sideMenu">
+                    <c:SitesSideMenu />
+                </nav>
+                <!-- Main -->
+                <main class="slds-col slds-size--10-of-12">
+                    <c:SitesSubHeader title="ホーム" />
+                    <div class="slds-box white-box slds-m-around--small">
+                        <!-- 姓 -->
+                        <div class="slds-form-element slds-has-divider--bottom">
+                            <span class="slds-form-element__label">姓</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static" >
+                                    <apex:outputText value="{!$User.LastName}" />
+                                </span>
+                            </div>
+                        </div>
+                        <!-- 名 -->
+                        <div class="slds-form-element slds-has-divider--bottom">
+                            <span class="slds-form-element__label">名</span>
+                            <div class="slds-form-element__control">
+                                <span class="slds-form-element__static" >
+                                    <apex:outputText value="{!$User.FirstName}" />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </apex:define>
+    </apex:composition>
+</apex:page>
