@@ -1,0 +1,183 @@
+<apex:page >
+    <script type="text/javascript">
+        var app = angular.module("Services", [])
+
+        // 共通変数
+        app.factory("fieldHelper", function() {
+            function getWrapper() {
+                return {
+                    workTime : {
+                        recordId : null,
+                        workDate : '',
+                        description : ''
+                    },
+                    workDateInput : null
+                };
+            }
+
+            return {
+                getWrapper: function() {
+                    return getWrapper();
+                }
+            }; 
+        });
+
+        // WorkTimeListServices
+        app.factory("WorkTimeListServices", ["$rootScope", function($rootScope) {
+            // 初期処理
+            function init(scope) {
+                // 勤怠時間情報の初期値取得
+                getDefaultWorkTimesByApex(scope);
+            }
+
+            // 勤怠時間情報の初期値取得
+            function getDefaultWorkTimesByApex(scope) {
+                WorkTimeController.getWorkTimes(function(results, event) {
+                    if(event.status) {
+                        // 日報情報に値をセット
+                        for (var i = 0; i < results.length; i++) {
+                            (function(result) {
+                                scope.workTimeList[i] = {
+                                    recordId : result.recordId,
+                                    workDateInput : new Date(result.workDate),
+                                    description : result.description
+                                };  
+                            })(results[i]);
+                        }
+                        // Viewに反映
+                        $rootScope.$apply();
+                    } else {
+                        alert(event.message);
+                    }
+                });
+            }
+
+            // 勤怠時間情報の削除
+            function deleteWorkTimeByApex(scope, recordId, index) {
+                console.log(recordId);
+                WorkTimeController.deleteWorkTime(recordId, function(result, event) {
+                    if(event.status) {
+                        // リストから除外
+                        scope.workTimeList.splice(index, 1);
+                        // ロック解除
+                        scope.isLocked = false;
+                        // Viewに反映
+                        $rootScope.$apply();
+                    } else {
+                        alert(event.message);
+                    }
+                });
+            }
+
+            return {
+                init: function(scope) {
+                    return init(scope);
+                },
+                delete: function(scope, recordId, index) {
+                    return deleteWorkTimeByApex(scope, recordId, index);
+                }
+            };
+        }]);
+
+        // WorkTimeServices
+        app.factory("WorkTimeServices", ["$rootScope", function($rootScope) {
+            // 初期処理
+            function init(scope, recordId) {
+                if (recordId) {
+                    getDefaultWorkTimeByApex(scope, recordId);
+                }
+            }
+
+            // 勤怠時間情報の初期値取得
+            function getDefaultWorkTimeByApex(scope, recordId) {
+                WorkTimeController.getWorkTime(recordId, function(result, event) {
+                    if(event.status) {
+                        // 結果をセット
+                        scope.wrapper = setWorkTime(scope.wrapper, result);
+                        // Viewに反映
+                        $rootScope.$apply();
+                    } else {
+                        alert(event.message);
+                    }
+                });
+            }
+
+            // 勤怠時間情報に値をセット
+            function setWorkTime(wrapper, result) {
+                if (result) {
+                    if (result.recordId) {
+                        wrapper.workTime.recordId = result.recordId;
+                    }
+                    if (result.workDate) {
+                        console.log(result.workDate);
+                        wrapper.workDateInput = new Date(result.workDate);
+                    }
+                    if (result.description) {
+                        wrapper.workTime.description = result.description;
+                    }
+                }
+                return wrapper;
+            }
+
+            // 勤怠時間情報の削除
+            function deleteWorkTimeByApex(scope, recordId) {
+                WorkTimeController.deleteWorkTime(recordId, function(result, event) {
+                    if(event.status) {
+                        location.href = "#/";
+                    } else {
+                        alert(event.message);
+                    }
+                });
+            }
+
+            // 保存処理
+            function save(scope) {
+                // 日付の変換
+                if (scope.wrapper.workDateInput) {
+                    scope.wrapper.workTime.workDate = moment(scope.wrapper.workDateInput).add(getTzOff(), 'hours').toDate().toUTCString();
+                }
+                // 勤怠時間情報の登録
+                saveWorkTimeByApex(scope);
+            }
+
+            // 勤怠時間情報の登録
+            function saveWorkTimeByApex(scope) {
+                console.log(scope.wrapper.workTime);
+                WorkTimeController.saveWorkTime(scope.wrapper.workTime, function(result, event) {
+                    if(event.status) {
+                        console.log(result);
+                        if (result.errorMessages.length > 0) {
+                            scope.errorMessages = result.errorMessages;
+                        } else {
+                            // 参照ページに遷移
+                            location.href = "#/view/" + result.recordId;
+                        }
+                    } else {
+                        alert(event.message);
+                    }
+                    scope.isLocked = false;
+                    $rootScope.$apply();
+                });
+            }
+
+            // 時差取得
+            function getTzOff() {
+                var date = new Date();
+                var result = ( date.getHours() - date.getUTCHours() + 24 ) % 24;
+                return result;
+            };
+
+            return {
+                init: function(scope, recordId) {
+                    return init(scope, recordId);
+                },
+                delete: function(scope, recordId) {
+                    return deleteWorkTimeByApex(scope, recordId);
+                },
+                save: function(scope) {
+                    return save(scope);
+                }
+            };
+        }]);
+    </script>
+</apex:page>

@@ -2,7 +2,7 @@
     <apex:composition template="SitesTemplate">
         <!-- Title -->
         <apex:define name="title">
-            <apex:outputText value="勤怠時間" />
+            <apex:outputText value="勤怠入力" />
         </apex:define>
     
         <!-- Body -->
@@ -15,9 +15,16 @@
                 </nav>
                 <!-- Main -->
                 <main class="slds-col slds-size--10-of-12">
-                    <c:SitesSubHeader title="勤怠時間" />
+                    <c:SitesSubHeader title="勤怠入力" />
+                    <div ng-app="myApp">
+                        <div ng-view="true" autoscroll="true"></div>
+                    </div>
                 </main>
             </div>
+            <!-- AngularJS -->
+            <apex:include pageName="WorkTimeAppJs" />
+            <apex:include pageName="WorkTimeControllerJs" />
+            <apex:include pageName="WorkTimeServicesJs" />
         </apex:define>
     </apex:composition>
 </apex:page>
