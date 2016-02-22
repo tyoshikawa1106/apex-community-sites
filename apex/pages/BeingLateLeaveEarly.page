@@ -16,8 +16,15 @@
                 <!-- Main -->
                 <main class="slds-col slds-size--10-of-12">
                     <c:SitesSubHeader title="遅刻・早退連絡" />
+                    <div ng-app="myApp">
+                        <div ng-view="true" autoscroll="true"></div>
+                    </div>
                 </main>
             </div>
+            <!-- AngularJS -->
+            <apex:include pageName="BeingLateLeaveEarlyAppJs" />
+            <apex:include pageName="BeingLateLeaveEarlyControllerJs" />
+            <apex:include pageName="BeingLateLeaveEarlyServicesJs" />
         </apex:define>
     </apex:composition>
 </apex:page>

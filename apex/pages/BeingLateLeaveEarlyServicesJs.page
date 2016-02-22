@@ -1,0 +1,180 @@
+<apex:page >
+    <script type="text/javascript">
+        var app = angular.module("Services", [])
+
+        // 共通変数
+        app.factory("fieldHelper", function() {
+            function getWrapper() {
+                return {
+                    beingLateLeaveEarly : {
+                        recordId : null,
+                        targetDate : '',
+                        description : ''
+                    },
+                    targetDateInput : null
+                };
+            }
+
+            return {
+                getWrapper: function() {
+                    return getWrapper();
+                }
+            }; 
+        });
+
+        // BeingLateLeaveEarlyListServices
+        app.factory("BeingLateLeaveEarlyListServices", ["$rootScope", function($rootScope) {
+            // 初期処理
+            function init(scope) {
+                // 遅刻早退情報の初期値取得
+                getDefaultBeingLateLeaveEarlysByApex(scope);
+            }
+
+            // 遅刻早退情報の初期値取得
+            function getDefaultBeingLateLeaveEarlysByApex(scope) {
+                BeingLateLeaveEarlyController.getBeingLateLeaveEarlys(function(results, event) {
+                    if(event.status) {
+                        // 日報情報に値をセット
+                        for (var i = 0; i < results.length; i++) {
+                            (function(result) {
+                                scope.beingLateLeaveEarlyList[i] = {
+                                    recordId : result.recordId,
+                                    targetDateInput : new Date(result.targetDate),
+                                    description : result.description
+                                };  
+                            })(results[i]);
+                        }
+                        // Viewに反映
+                        $rootScope.$apply();
+                    } else {
+                        alert(event.message);
+                    }
+                });
+            }
+
+            // 遅刻早退情報の削除
+            function deleteBeingLateLeaveEarlyByApex(scope, recordId, index) {
+                BeingLateLeaveEarlyController.deleteBeingLateLeaveEarly(recordId, function(result, event) {
+                    if(event.status) {
+                        // リストから除外
+                        scope.beingLateLeaveEarlyList.splice(index, 1);
+                        // ロック解除
+                        scope.isLocked = false;
+                        // Viewに反映
+                        $rootScope.$apply();
+                    } else {
+                        alert(event.message);
+                    }
+                });
+            }
+
+            return {
+                init: function(scope) {
+                    return init(scope);
+                },
+                delete: function(scope, recordId, index) {
+                    return deleteBeingLateLeaveEarlyByApex(scope, recordId, index);
+                }
+            };
+        }]);
+
+        // BeingLateLeaveEarlyServices
+        app.factory("BeingLateLeaveEarlyServices", ["$rootScope", function($rootScope) {
+            // 初期処理
+            function init(scope, recordId) {
+                if (recordId) {
+                    getDefaultBeingLateLeaveEarlyByApex(scope, recordId);
+                }
+            }
+
+            // 遅刻早退情報の初期値取得
+            function getDefaultBeingLateLeaveEarlyByApex(scope, recordId) {
+                BeingLateLeaveEarlyController.getBeingLateLeaveEarly(recordId, function(result, event) {
+                    if(event.status) {
+                        // 結果をセット
+                        scope.wrapper = setBeingLateLeaveEarly(scope.wrapper, result);
+                        // Viewに反映
+                        $rootScope.$apply();
+                    } else {
+                        alert(event.message);
+                    }
+                });
+            }
+
+            // 遅刻早退情報に値をセット
+            function setBeingLateLeaveEarly(wrapper, result) {
+                if (result) {
+                    if (result.recordId) {
+                        wrapper.beingLateLeaveEarly.recordId = result.recordId;
+                    }
+                    if (result.targetDate) {
+                        wrapper.targetDateInput = new Date(result.targetDate);
+                    }
+                    if (result.description) {
+                        wrapper.beingLateLeaveEarly.description = result.description;
+                    }
+                }
+                return wrapper;
+            }
+
+            // 遅刻早退情報の削除
+            function deleteBeingLateLeaveEarlyByApex(scope, recordId) {
+                BeingLateLeaveEarlyController.deleteBeingLateLeaveEarly(recordId, function(result, event) {
+                    if(event.status) {
+                        location.href = "#/";
+                    } else {
+                        alert(event.message);
+                    }
+                });
+            }
+
+            // 保存処理
+            function save(scope) {
+                // 日付の変換
+                if (scope.wrapper.targetDateInput) {
+                    scope.wrapper.beingLateLeaveEarly.targetDate = moment(scope.wrapper.targetDateInput).add(getTzOff(), 'hours').toDate().toUTCString();
+                }
+                // 勤怠時間情報の登録
+                saveBeingLateLeaveEarlyByApex(scope);
+            }
+
+            // 遅刻早退情報の登録
+            function saveBeingLateLeaveEarlyByApex(scope) {
+                console.log(scope.wrapper.workTime);
+                BeingLateLeaveEarlyController.saveBeingLateLeaveEarly(scope.wrapper.beingLateLeaveEarly, function(result, event) {
+                    if(event.status) {
+                        if (result.errorMessages.length > 0) {
+                            scope.errorMessages = result.errorMessages;
+                        } else {
+                            // 参照ページに遷移
+                            location.href = "#/view/" + result.recordId;
+                        }
+                    } else {
+                        alert(event.message);
+                    }
+                    scope.isLocked = false;
+                    $rootScope.$apply();
+                });
+            }
+
+            // 時差取得
+            function getTzOff() {
+                var date = new Date();
+                var result = ( date.getHours() - date.getUTCHours() + 24 ) % 24;
+                return result;
+            };
+
+            return {
+                init: function(scope, recordId) {
+                    return init(scope, recordId);
+                },
+                delete: function(scope, recordId) {
+                    return deleteBeingLateLeaveEarlyByApex(scope, recordId);
+                },
+                save: function(scope) {
+                    return save(scope);
+                }
+            };
+        }]);
+    </script>
+</apex:page>

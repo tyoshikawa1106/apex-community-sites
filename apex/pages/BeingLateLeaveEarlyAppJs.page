@@ -1,0 +1,25 @@
+<apex:page >
+    <script type="text/javascript">
+        angular.module("myApp", ["Controllers", "ngRoute", "ngMessages"]).config(["$routeProvider", function($routeProvider){
+            $routeProvider.when("/", {
+                controller : "BeingLateLeaveEarlyListCtrl",
+                templateUrl : "/apex/BeingLateLeaveEarlyList"
+            }).
+            when("/edit", {
+                controller : "BeingLateLeaveEarlyEditCtrl",
+                templateUrl : "/apex/BeingLateLeaveEarlyEdit"
+            }).
+            when("/edit/:id", {
+                controller : "BeingLateLeaveEarlyEditCtrl",
+                templateUrl : "/apex/BeingLateLeaveEarlyEdit"
+            }).
+            when("/view/:id", {
+                controller : "BeingLateLeaveEarlyViewCtrl",
+                templateUrl : "/apex/BeingLateLeaveEarlyView"
+            }).
+            otherwise({
+                redirectTo: "/"
+            });
+        }]);
+    </script>
+</apex:page>

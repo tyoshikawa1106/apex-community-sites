@@ -1,0 +1,25 @@
+<apex:page >
+    <script type="text/javascript">
+        angular.module("myApp", ["Controllers", "ngRoute", "ngMessages"]).config(["$routeProvider", function($routeProvider){
+            $routeProvider.when("/", {
+                controller : "LeaveRequestListCtrl",
+                templateUrl : "/apex/LeaveRequestList"
+            }).
+            when("/edit", {
+                controller : "LeaveRequestEditCtrl",
+                templateUrl : "/apex/LeaveRequestEdit"
+            }).
+            when("/edit/:id", {
+                controller : "LeaveRequestEditCtrl",
+                templateUrl : "/apex/LeaveRequestEdit"
+            }).
+            when("/view/:id", {
+                controller : "LeaveRequestViewCtrl",
+                templateUrl : "/apex/LeaveRequestView"
+            }).
+            otherwise({
+                redirectTo: "/"
+            });
+        }]);
+    </script>
+</apex:page>

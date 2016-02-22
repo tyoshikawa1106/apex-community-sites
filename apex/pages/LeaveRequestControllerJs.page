@@ -1,0 +1,101 @@
+<apex:page >
+    <script type="text/javascript">
+        (function(){
+            "use strict";
+
+            var app = angular.module("Controllers", ["Services"]);
+
+            // 例外処理
+            app.factory("$exceptionHandler", function () {
+                return function (exception, cause) {
+                    console.log(exception.message);
+                    var msg = "画面の処理中にエラーが発生しました。" + "ご迷惑をおかけしております。";
+                    alert(msg);
+                };
+            });
+        
+            // LeaveRequestListCtrl
+            app.controller("LeaveRequestListCtrl", ["$scope", "LeaveRequestListServices", function($scope, helper) {
+                try {
+                    // エラーメッセージ
+                    $scope.errorMessages = [];
+                    // 休暇申請リスト
+                    $scope.leaveRequestList = [];
+                    // 操作ブロック
+                    $scope.isLocked = false;
+                    
+                    // 初期処理
+                    helper.init($scope);
+
+                    // 新規ボタン
+                    $scope.new = function(event) {
+                        event.preventDefault();
+                        // 新規ページへ遷移
+                        location.href="#/edit";
+                    };
+
+                    // 削除ボタン
+                    $scope.delete = function(event, index) {
+                        event.preventDefault();
+                        // IDをセット
+                        var recordId = $scope.leaveRequestList[index].Id;
+                        // ロック
+                        $scope.isLocked = true;
+                        // 削除処理実行
+                        helper.delete($scope, recordId, index);
+                    }
+                } catch (e) {
+                    throw e;
+                }
+            }]);
+
+            // LeaveRequestViewCtrl
+            app.controller("LeaveRequestViewCtrl", ["$scope", "fieldHelper", "$routeParams", "LeaveRequestServices"
+                                                                    , function($scope, fieldHelper, $routeParams, helper) {
+                try {
+                    $scope.errorMessages = [];
+                    $scope.wrapper = fieldHelper.getWrapper();
+                    $scope.isLocked =　false;
+
+                    // 初期処理
+                    helper.init($scope, $routeParams.id);
+
+                    // 削除ボタン
+                    $scope.delete = function(event) {
+                        event.preventDefault();
+                        // ロック
+                        $scope.isLocked = true;
+                        // 削除処理実行
+                        helper.delete($scope, $routeParams.id);
+                    };
+                } catch (e) {
+                    throw e;
+                }
+            }]);
+        
+            // LeaveRequestEditCtrl
+            app.controller("LeaveRequestEditCtrl", ["$scope", "fieldHelper", "$routeParams", "LeaveRequestServices"
+                                                                    , function($scope, fieldHelper, $routeParams, helper) {
+                try {
+                    $scope.errorMessages = [];
+                    $scope.wrapper = fieldHelper.getWrapper();
+                    $scope.isLocked = false;
+
+                    // 初期処理
+                    helper.init($scope, $routeParams.id);
+
+                    // 保存ボタン
+                    $scope.save = function(event) {
+                        event.preventDefault();
+                        // 操作ロック
+                        $scope.isLocked = true;
+                        // 保存処理実行
+                        helper.save($scope);
+                    };
+                } catch (e) {
+                    throw e;
+                }
+            }]);
+        })();
+    </script>
+</apex:page>

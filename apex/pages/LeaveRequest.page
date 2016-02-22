@@ -16,8 +16,15 @@
                 <!-- Main -->
                 <main class="slds-col slds-size--10-of-12">
                     <c:SitesSubHeader title="休暇申請" />
+                    <div ng-app="myApp">
+                        <div ng-view="true" autoscroll="true"></div>
+                    </div>
                 </main>
             </div>
+            <!-- AngularJS -->
+            <apex:include pageName="LeaveRequestAppJs" />
+            <apex:include pageName="LeaveRequestControllerJs" />
+            <apex:include pageName="LeaveRequestServicesJs" />
         </apex:define>
     </apex:composition>
 </apex:page>
