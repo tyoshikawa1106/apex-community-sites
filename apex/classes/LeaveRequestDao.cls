@@ -16,6 +16,10 @@ public with sharing class LeaveRequestDao {
                  Id
                 ,Date__c
                 ,Description__c
+                ,RequestType__c
+                ,ApprovalUser__c
+                ,ApprovalUser__r.Name
+                ,ApprovalUser__r.SmallPhotoUrl
             FROM
                 LeaveRequest__c
             WHERE
@@ -34,6 +38,10 @@ public with sharing class LeaveRequestDao {
                  Id
                 ,Date__c
                 ,Description__c
+                ,RequestType__c
+                ,ApprovalUser__c
+                ,ApprovalUser__r.Name
+                ,ApprovalUser__r.SmallPhotoUrl
             FROM
                 LeaveRequest__c
             WHERE

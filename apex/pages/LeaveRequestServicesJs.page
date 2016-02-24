@@ -9,9 +9,15 @@
                     leaveRequest : {
                         recordId : null,
                         leaveDate : null,
-                        description : ''
+                        description : '',
+                        requestType : '全休',
+                        approvalUser : null,
+                        approvalUserName : '',
                     },
-                    leaveDateInput : null
+                    leaveDateInput : null,
+                    approvalUserList : [],
+                    approvalUserInput : '',
+                    approvalUserPhotoUrl : ''
                 };
             }
 
@@ -40,7 +46,11 @@
                                 scope.leaveRequestList[i] = {
                                     recordId : result.recordId,
                                     leaveDateInput : new Date(result.leaveDate),
-                                    description : result.description
+                                    description : result.description,
+                                    requestType : result.requestType,
+                                    approvalUser : result.approvalUser,
+                                    approvalUserName : result.approvalUserName,
+                                    approvalUserPhotoUrl : result.approvalUserPhotoUrl,
                                 };
                             })(results[i]);
                         }
@@ -52,7 +62,7 @@
                 });
             }
 
-            // 日報情報の削除
+            // 休暇申請情報の削除
             function deleteLeaveRequestByApex(scope, recordId, index) {
                 LeaveRequestController.deleteLeaveRequest(recordId, function(result, event) {
                     if(event.status) {
@@ -113,6 +123,18 @@
                     if (result.description) {
                         wrapper.leaveRequest.description = result.description;
                     }
+                    if (result.requestType) {
+                        wrapper.leaveRequest.requestType = result.requestType;
+                    }
+                    if (result.approvalUser) {
+                        wrapper.leaveRequest.approvalUser = result.approvalUser;
+                    }
+                    if (result.approvalUserName) {
+                        wrapper.leaveRequest.approvalUserName = result.approvalUserName;
+                    }
+                    if (result.approvalUserPhotoUrl) {
+                        wrapper.approvalUserPhotoUrl = result.approvalUserPhotoUrl;
+                    }
                 }
                 return wrapper;
             }
@@ -156,6 +178,23 @@
                 });
             }
 
+            // 承認担当ユーザ検索
+            function searchApprovalUser(scope) {
+                searchApprovalUserByApex(scope);
+            }
+
+            // 承認担当ユーザ検索(Apex)
+            function searchApprovalUserByApex(scope) {
+                LeaveRequestController.getApprovalUsers(scope.wrapper.approvalUserInput, function(results, event) {
+                    if(event.status) {
+                        scope.wrapper.approvalUserList = results;
+                    } else {
+                        alert(event.message);
+                    }
+                    $rootScope.$apply();
+                });
+            }
+
             // 時差取得
             function getTzOff() {
                 var date = new Date();
@@ -172,6 +211,9 @@
                 },
                 save: function(scope) {
                     return save(scope);
+                },
+                searchApprovalUser : function(scope) {
+                    return searchApprovalUser(scope);
                 }
             };
         }]);

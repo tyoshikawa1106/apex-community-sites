@@ -1,5 +1,7 @@
 public with sharing class HomeController {
 
+    private static HomeDao dao = new HomeDao();
+
     /**
      * コンストラクタ
      */
@@ -16,5 +18,13 @@ public with sharing class HomeController {
         if (startUrl != null) return startUrl;
 
         return null;
+    }
+
+    /**
+     * ユーザ情報の取得
+     */
+    @RemoteAction
+    public static User getLoginUser() {
+        return dao.getLoginUser();
     }
 }

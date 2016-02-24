@@ -1,5 +1,5 @@
 <apex:page docType="html-5.0" showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false">
-    <div>
+    <div xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <div class="slds-m-around--small">
             <!-- 入力フィールド -->
             <form name="inputForm" novalidate="true" class="slds-m-horizontal--small">

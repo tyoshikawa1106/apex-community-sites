@@ -1,5 +1,5 @@
 <apex:page showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false" id="pg">
-    <html lang="ja">
+    <html lang="ja" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <head>
             <!-- Title -->
             <title>
@@ -12,7 +12,10 @@
             <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular.min.js" />
             <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-route.js" />
             <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-messages.js" />
+            <!-- moment.js -->
             <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js" />
+            <!-- Chart.js -->
+            <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js" />
             <!-- Lightning Design System -->
             <apex:stylesheet value="{!URLFOR($Resource.SLDS0122, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
             <!-- Common CSS -->

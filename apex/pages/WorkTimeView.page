@@ -1,29 +1,45 @@
 <apex:page showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false">
-    <div class="slds-m-around--small">
-        <form name="resultForm" novalidate="true" class="slds-m-around--medium slds-m-right--xx-large">
-            <!-- メッセージ -->
-            <div class="slds-box slds-theme--info slds-m-bottom--small" ng-show="!!errorMessages.length">
-                <p><span ng-bind="errorMessages"></span></p>
-            </div>
-            <!-- 日付 -->
-            <div class="slds-form-element slds-has-divider--bottom">
-                <span class="slds-form-element__label">{!$ObjectType.WorkTime__c.Fields.Date__c.Label}</span>
-                <div class="slds-form-element__control">
-                    <span class="slds-form-element__static" ng-bind="wrapper.workDateInput | date:'yyyy-MM-dd'"></span>
+    <div xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <div class="slds-m-around--small">
+            <form name="resultForm" novalidate="true" class="slds-m-around--medium slds-m-right--xx-large">
+                <!-- メッセージ -->
+                <div class="slds-box slds-theme--info slds-m-bottom--small" ng-show="!!errorMessages.length">
+                    <p><span ng-bind="errorMessages"></span></p>
                 </div>
-            </div>
-            <!-- 作業内容 -->
-            <div class="slds-form-element slds-has-divider--bottom">
-                <span class="slds-form-element__label">{!$ObjectType.WorkTime__c.Fields.Description__c.Label}</span>
-                <div class="slds-form-element__control">
-                    <span class="slds-form-element__static textAreaView" ng-bind="wrapper.workTime.description"></span>
+                <!-- 日付 -->
+                <div class="slds-form-element slds-has-divider--bottom">
+                    <span class="slds-form-element__label">{!$ObjectType.WorkTime__c.Fields.Date__c.Label}</span>
+                    <div class="slds-form-element__control">
+                        <span class="slds-form-element__static" ng-bind="wrapper.workDateInput | date:'yyyy年MM月dd日'"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="slds-m-top--small">
-                <a href="#/edit/{{wrapper.workTime.recordId}}" class="slds-button slds-button--brand">編集</a>
-                <a ng-click="delete($event, wrapper.workTime.recordId)" class="slds-button slds-button--destructive">削除</a>
-                <a href="#/" class="slds-button slds-button--neutral">一覧に戻る</a>
-            </div>
-        </form>
+                <!-- 開始時間 -->
+                <div class="slds-form-element slds-has-divider--bottom">
+                    <span class="slds-form-element__label">{!$ObjectType.WorkTime__c.Fields.WorkStartTime__c.Label}</span>
+                    <div class="slds-form-element__control">
+                        <span class="slds-form-element__static" ng-bind="wrapper.startTimeInput | date:'HH:mm'"></span>
+                    </div>
+                </div>
+                <!-- 終了時間 -->
+                <div class="slds-form-element slds-has-divider--bottom">
+                    <span class="slds-form-element__label">{!$ObjectType.WorkTime__c.Fields.WorkEndTime__c.Label}</span>
+                    <div class="slds-form-element__control">
+                        <span class="slds-form-element__static" ng-bind="wrapper.endTimeInput | date:'HH:mm'"></span>
+                    </div>
+                </div>
+                <!-- 作業内容 -->
+                <div class="slds-form-element slds-has-divider--bottom">
+                    <span class="slds-form-element__label">{!$ObjectType.WorkTime__c.Fields.Description__c.Label}</span>
+                    <div class="slds-form-element__control">
+                        <span class="slds-form-element__static textAreaView" ng-bind="wrapper.workTime.description"></span>
+                    </div>
+                </div>
+                <div class="slds-m-top--small">
+                    <a href="#/edit/{{wrapper.workTime.recordId}}" class="slds-button slds-button--brand">編集</a>
+                    <a ng-click="delete($event, wrapper.workTime.recordId)" class="slds-button slds-button--destructive">削除</a>
+                    <a href="#/" class="slds-button slds-button--neutral">一覧に戻る</a>
+                </div>
+            </form>
+        </div>
     </div>
 </apex:page>

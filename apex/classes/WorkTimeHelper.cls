@@ -18,6 +18,12 @@ public with sharing class WorkTimeHelper {
         if (wrapper.workDate != null) {
             workTime.Date__c = wrapper.workDate;
         }
+        if (wrapper.startTime != null) {
+            workTime.WorkStartTime__c = wrapper.startTime;
+        }
+        if (wrapper.endTime != null) {
+            workTime.WorkEndTime__c = wrapper.endTime;
+        }
         if (String.isNotEmpty(wrapper.description)) {
             workTime.Description__c = wrapper.description;
         }

@@ -38,7 +38,7 @@
                     $scope.delete = function(event, index) {
                         event.preventDefault();
                         // IDをセット
-                        var recordId = $scope.leaveRequestList[index].Id;
+                        var recordId = $scope.leaveRequestList[index].recordId;
                         // ロック
                         $scope.isLocked = true;
                         // 削除処理実行
@@ -92,6 +92,39 @@
                         // 保存処理実行
                         helper.save($scope);
                     };
+
+                    // 承認担当をクリア
+                    $scope.removeApprovalUser = function(event) {
+                        event.preventDefault();
+                        $scope.wrapper.leaveRequest.approvalUserName = '';
+                        $scope.wrapper.leaveRequest.approvalUser = null;
+                        $scope.wrapper.approvalUserList = [];
+                        $scope.wrapper.approvalUserInput = '';
+                        $scope.wrapper.approvalUserPhotoUrl = '';
+                    };
+
+                    // 承認担当をリアルタイム検索
+                    $scope.searchApplovalUser = function(event) {
+                        event.preventDefault();
+                        if(!!$scope.wrapper.approvalUserInput.length) {
+                            helper.searchApprovalUser($scope);
+                        } else {
+                            $scope.wrapper.leaveRequest.approvalUserName = '';
+                            $scope.wrapper.leaveRequest.approvalUser = null;
+                            $scope.wrapper.approvalUserList = [];
+                            $scope.wrapper.approvalUserInput = '';
+                            $scope.wrapper.approvalUserPhotoUrl = '';
+                        }
+                    };
+
+                    // 承認担当をセット
+                    $scope.setApprovalUser = function(event, index) {
+                        $scope.wrapper.leaveRequest.approvalUserName = $scope.wrapper.approvalUserList[index].Name;
+                        $scope.wrapper.leaveRequest.approvalUser = $scope.wrapper.approvalUserList[index].Id;
+                        $scope.wrapper.approvalUserPhotoUrl = $scope.wrapper.approvalUserList[index].SmallPhotoUrl;
+                        $scope.wrapper.approvalUserList = [];
+                        $scope.wrapper.approvalUserInput = '';
+                    }
                 } catch (e) {
                     throw e;
                 }

@@ -1,5 +1,5 @@
 <apex:page docType="html-5.0" showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false">
-    <div>
+    <div xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <div class="slds-m-around--small">
             <!-- 入力フィールド -->
             <form name="inputForm" novalidate="true" class="slds-m-horizontal--small">
@@ -19,7 +19,71 @@
                         <div class="slds-form-element__help"></div>
                     </div>
                 </div>
-                <!-- 作業内容 -->
+                <!-- 申請種類 -->
+                <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="requestType">{!$ObjectType.LeaveRequest__c.Fields.RequestType__c.Label}</label>
+                    <div class="slds-form-element__control">
+                        <div class="slds-select_container">
+                            <select id="requestType" class="slds-select" ng-model="wrapper.leaveRequest.requestType">
+                                <option value="全休">全休</option>
+                                <option value="午前休">午前休</option>
+                                <option value="午後休">午後休</option>
+                            </select>
+                        </div>
+                        <div class="slds-form-element__help"></div>
+                    </div>
+                </div>
+                <!-- 承認担当 -->
+                <div class="slds-lookup" data-select="single" data-scope="single" data-typeahead="true">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="lookup">{!$ObjectType.LeaveRequest__c.Fields.ApprovalUser__c.Label}</label>
+                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right">
+                            <!-- 承認担当選択済み -->
+                            <div ng-show="!!wrapper.leaveRequest.approvalUser.length">
+                                <div class="slds-pill__container">
+                                    <a class="slds-pill">
+                                        <span class="slds-pill__icon slds-avatar">
+                                            <img ng-src="{{wrapper.approvalUserPhotoUrl}}" alt="" />
+                                        </span>
+                                        <span class="slds-pill__label" ng-bind="wrapper.leaveRequest.approvalUserName"></span>
+                                        <button class="slds-button slds-button--icon-bare slds-pill__remove" ng-click="removeApprovalUser($event)">
+                                            <svg aria-hidden="true" class="slds-button__icon">
+                                                <use xlink:href="/resource/SLDS0122/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                                            </svg>
+                                            <span class="slds-assistive-text">Remove</span>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- 承認担当名入力 -->
+                            <div ng-hide="!!wrapper.leaveRequest.approvalUser.length">
+                                <svg aria-hidden="true" class="slds-input__icon">
+                                    <use xlink:href="/resource/SLDS0122/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+                                </svg>
+                                <input ng-model="wrapper.approvalUserInput" class="slds-input" type="text" aria-autocomplete="list"
+                                    role="combobox" aria-expanded="true" aria-activedescendant="" ng-keyup="searchApplovalUser($event)" />
+                            </div>
+                            <div class="slds-form-element__help"></div>
+                        </div>
+                    </div>
+                    <!-- 承認担当選択リスト -->
+                    <div ng-show="!!wrapper.approvalUserList.length">
+                        <div class="slds-lookup__menu" role="listbox">
+                            <ul class="slds-lookup__list" role="presentation">
+                                <li class="slds-lookup__item" ng-repeat="item in wrapper.approvalUserList">
+                                    <a role="option" ng-click="setApprovalUser($event, $index)">
+                                        <span class="slds-pill__icon slds-avatar">
+                                            <img ng-src="{{item.SmallPhotoUrl}}" alt="" />
+                                        </span>
+                                        <span ng-bind="item.Name" />
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="slds-form-element__help"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 備考 -->
                 <div class="slds-form-element" ng-class="{'slds-has-error': inputForm.description.$invalid && inputForm.description.$dirty}">
                     <label class="slds-form-element__label" for="description">{!$ObjectType.LeaveRequest__c.Fields.Description__c.Label}</label>
                     <div class="slds-form-element__control">

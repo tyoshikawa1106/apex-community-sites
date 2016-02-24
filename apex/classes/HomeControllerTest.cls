@@ -18,4 +18,21 @@ private class HomeControllerTest {
             Test.stopTest();
         }
     }
+
+    /**
+     * ユーザ情報の取得
+     */
+    static testMethod void getLoginUserTest() {
+        
+        System.runAs(testAdminUser) {
+
+            Test.startTest();
+            
+            User result = HomeController.getLoginUser();
+            
+            Test.stopTest();
+
+            System.assertEquals(String.isNotEmpty(result.Id), true);
+        }
+    }
 }

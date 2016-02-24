@@ -55,8 +55,10 @@ public with sharing class WorkTimeController {
     public static RemoteActionResult saveWorkTime(WorkTimeWrapper wrapper) {
         RemoteActionResult result = new RemoteActionResult();
         try {
+            System.debug(wrapper);
             // 勤怠レコード作成
             WorkTime__c workTime = helper.setWorkTime(wrapper);
+            System.debug(workTime);
             // 登録処理実行
             upsert workTime;
             result.recordId = workTime.Id;

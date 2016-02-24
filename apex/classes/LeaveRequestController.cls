@@ -78,4 +78,13 @@ public with sharing class LeaveRequestController {
     public static void deleteLeaveRequest(String deleteId) {
         delete dao.getDeleteLeaveRequests(deleteId);
     }
+
+    /**
+     * 承認担当ユーザの検索
+     */
+    @RemoteAction
+    public static List<User> getApprovalUsers(String userName) {
+        String key = userName + '%';
+        return [SELECT Id,Name,SmallPhotoUrl FROM User WHERE IsActive = true AND Name LIKE: key LIMIT 200];
+    }
 }

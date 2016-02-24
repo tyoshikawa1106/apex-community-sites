@@ -1,0 +1,151 @@
+<apex:page >
+    <script type="text/javascript">
+        var app = angular.module("Services", [])
+
+        // 共通変数
+        app.factory("fieldHelper", function() {
+            function getWrapper() {
+                return {
+                    user : {
+                        name : '',
+                        photoUrl : '',
+                        language : '',
+                        timeZone : ''
+                    }
+                };
+            }
+
+            return {
+                getWrapper: function() {
+                    return getWrapper();
+                }
+            }; 
+        });
+
+        // HomeServices
+        app.factory("HomeServices", ["$rootScope", function($rootScope) {
+            // 初期処理
+            function init(scope) {
+                // ユーザ情報取得
+                getUserInfoByApex(scope);
+                // 勤怠グラフ表示
+                setWorkTimeChart();
+                // 休暇申請グラフ表示
+                setLeaveRequestChart();
+                // 遅刻早退グラフ表示
+                setBeingLateLeaveEarlyChart();
+            }
+
+            // ユーザ情報の初期値取得
+            function getUserInfoByApex(scope) {
+                HomeController.getLoginUser(function(result, event) {
+                    if(event.status) {
+                        // 結果をセット
+                        scope.wrapper = setUserInfo(scope.wrapper, result);
+                        // Viewに反映
+                        $rootScope.$apply();
+                    } else {
+                        alert(event.message);
+                    }
+                });
+            }
+
+            // ユーザ情報に値をセット
+            function setUserInfo(wrapper, result) {
+                if (result) {
+                    if (result.Id) {
+                        wrapper.user.Id = result.Id;
+                    }
+                    if (result.Name) {
+                        wrapper.user.name = result.Name;
+                    }
+                    if (result.SmallPhotoUrl) {
+                        wrapper.user.photoUrl = result.SmallPhotoUrl;
+                    }
+                    if (result.LanguageLocaleKey) {
+                        wrapper.user.language = result.LanguageLocaleKey;
+                    }
+                    if (result.TimeZoneSidKey) {
+                        wrapper.user.timeZone = result.TimeZoneSidKey;
+                    }
+                }
+                return wrapper;
+            }
+
+            // 勤怠グラフ
+            function setWorkTimeChart() {
+                var randomScalingFactor = function(){ return Math.round(Math.random()*10)};
+                var chartData = {
+                    labels : ["2/1","2/2","2/3","2/4","2/5","2/6","2/7","2/8","2/9","2/10","2/11","2/12","2/13","2/14","2/15","2/16","2/17","2/18","2/19","2/20","2/21","2/22","2/23","2/24","2/25","2/26","2/27","2/28","2/29"],
+                    datasets : [
+                        {
+                            fillColor : "#46BFBD",
+                            strokeColor : "#46BFBD",
+                            highlightFill: "#5AD3D1",
+                            highlightStroke: "#5AD3D1",
+                            data : [
+                                randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),
+                                randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),
+                                randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),
+                                randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),
+                                randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),
+                                randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),
+                                randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),
+                                randomScalingFactor()
+                            ]
+                        }
+                    ]
+                }
+                var el = document.getElementById('workTimeChart');
+                var ctx = el.getContext('2d');
+                var myNewChart = new Chart(ctx).Bar(chartData);
+            }
+
+            // 休暇申請グラフ
+            function setLeaveRequestChart() {
+                var randomScalingFactor = function(){ return Math.round(Math.random()*10)};
+                var chartData = {
+                    labels : ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
+                    datasets : [
+                        {
+                            fillColor : "#46BFBD",
+                            strokeColor : "#46BFBD",
+                            highlightFill: "#5AD3D1",
+                            highlightStroke: "#5AD3D1",
+                            data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+                        }
+                    ]
+                }
+                var el = document.getElementById('leaveRequestChart');
+                var ctx = el.getContext('2d');
+                var myNewChart = new Chart(ctx).Bar(chartData);
+            }
+
+            // 遅刻早退グラフ
+            function setBeingLateLeaveEarlyChart() {
+                var randomScalingFactor = function(){ return Math.round(Math.random()*10)};
+                var chartData = {
+                    labels : ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
+                    datasets : [
+                        {
+                            fillColor : "#46BFBD",
+                            strokeColor : "#46BFBD",
+                            highlightFill: "#5AD3D1",
+                            highlightStroke: "#5AD3D1",
+                            data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+                        }
+                    ]
+                }
+                var el = document.getElementById('beingLateLeaveEarlyChart');
+                var ctx = el.getContext('2d');
+                var myNewChart = new Chart(ctx).Bar(chartData);
+            }
+
+            return {
+                init: function(scope) {
+                    return init(scope);
+                }
+            };
+        }]);
+    </script>
+</apex:page>

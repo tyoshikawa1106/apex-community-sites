@@ -1,0 +1,42 @@
+<apex:page showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false">
+    <div xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <!-- プロフィール -->
+        <div class="slds-box white-box slds-m-around--small">
+            <div class="slds-media slds-tile">
+                <div class="slds-media__figure">
+                    <span class="slds-avatar slds-avatar--circle slds-avatar--small">
+                        <img ng-src="{{wrapper.user.photoUrl}}" alt="" />
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <p class="slds-tile__title slds-truncate"><a><span ng-bind="wrapper.user.name"></span></a></p>
+                    <ul class="slds-tile__detail slds-list--horizontal slds-has-dividers slds-text-body--small">
+                        <li class="slds-truncate slds-list__item" ng-show="!!wrapper.user.language.length">Language : <span ng-bind="wrapper.user.language"></span></li>
+                        <li class="slds-truncate slds-list__item" ng-show="!!wrapper.user.timeZone.length">TimeZone : <span ng-bind="wrapper.user.timeZone"></span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- 今月の勤怠時間 [DEMO] -->
+        <div class="slds-box white-box slds-m-around--small sites-chart">
+            <h1>今月の勤怠時間 [DEMO]</h1>
+            <div id="workTimeChartView">
+                <canvas id="workTimeChart" width="400" height="400"/>
+            </div>
+        </div>
+        <!-- 今年の休暇申請件数 [DEMO] -->
+        <div class="slds-box white-box slds-m-around--small sites-chart">
+            <h1>今年の休暇申請件数 [DEMO]</h1>
+            <div id="leaveRequestChartView">
+                <canvas id="leaveRequestChart" width="400" height="400"/>
+            </div>
+        </div>
+        <!-- 今年の遅刻早退件数 [DEMO] -->
+        <div class="slds-box white-box slds-m-around--small sites-chart">
+            <h1>今年の遅刻早退件数 [DEMO]</h1>
+            <div id="beingLateLeaveEarlyChartView">
+                <canvas id="beingLateLeaveEarlyChart" width="400" height="400"/>
+            </div>
+        </div>
+    </div>
+</apex:page>

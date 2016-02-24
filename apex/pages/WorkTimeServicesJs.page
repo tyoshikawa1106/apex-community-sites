@@ -9,9 +9,13 @@
                     workTime : {
                         recordId : null,
                         workDate : '',
-                        description : ''
+                        description : '',
+                        startTime : null,
+                        endTime : null,
                     },
-                    workDateInput : null
+                    workDateInput : null,
+                    startTimeInput : null,
+                    endTimeInput : null
                 };
             }
 
@@ -39,7 +43,9 @@
                             (function(result) {
                                 scope.workTimeList[i] = {
                                     recordId : result.recordId,
-                                    workDateInput : new Date(result.workDate),
+                                    workDateInput : moment(result.workDate).toDate(),
+                                    startTimeInput : moment(result.startTime).toDate(),
+                                    endTimeInput : moment(result.endTime).toDate(),
                                     description : result.description
                                 };  
                             })(results[i]);
@@ -54,7 +60,6 @@
 
             // 勤怠時間情報の削除
             function deleteWorkTimeByApex(scope, recordId, index) {
-                console.log(recordId);
                 WorkTimeController.deleteWorkTime(recordId, function(result, event) {
                     if(event.status) {
                         // リストから除外
@@ -109,8 +114,13 @@
                         wrapper.workTime.recordId = result.recordId;
                     }
                     if (result.workDate) {
-                        console.log(result.workDate);
-                        wrapper.workDateInput = new Date(result.workDate);
+                        wrapper.workDateInput = moment(result.workDate).toDate();
+                    }
+                    if (result.startTime) {
+                        wrapper.startTimeInput = moment(result.startTime).toDate();
+                    }
+                    if (result.endTime) {
+                        wrapper.endTimeInput = moment(result.endTime).toDate();
                     }
                     if (result.description) {
                         wrapper.workTime.description = result.description;
@@ -132,20 +142,60 @@
 
             // 保存処理
             function save(scope) {
-                // 日付の変換
-                if (scope.wrapper.workDateInput) {
-                    scope.wrapper.workTime.workDate = moment(scope.wrapper.workDateInput).add(getTzOff(), 'hours').toDate().toUTCString();
+
+                // 対象日付取得
+                var targetDate = moment(scope.wrapper.workDateInput);
+                console.log('targetDate = ' + targetDate.format("YYYY-MM-DD HH:mm:ss"));
+
+                // 日付取得
+                scope.wrapper.workTime.workDate = getDate(targetDate);
+
+                if (scope.wrapper.startTimeInput) {
+                    // 時間取得
+                    var startTime = moment(scope.wrapper.startTimeInput);
+                    console.log('startTime = ' + startTime.format("HH:mm:ss"));
+                    // 日時に変換してセット
+                    scope.wrapper.workTime.startTime = getDateTime(targetDate, startTime);
                 }
+
+                if (scope.wrapper.endTimeInput) {
+                    // 時間取得
+                    var endTime = moment(scope.wrapper.endTimeInput);
+                    console.log('endTime = ' + endTime.format("HH:mm:ss"));
+                    // 日時に変換してセット
+                    scope.wrapper.workTime.endTime = getDateTime(targetDate, endTime);
+                }
+                
                 // 勤怠時間情報の登録
                 saveWorkTimeByApex(scope);
             }
 
+            // 日付変換
+            function getDate(d) {
+                // 日付に変換して戻す
+                return moment(d).utc().toDate().toUTCString();
+            }
+
+            // 日時変換
+            function getDateTime(d, t) {
+                // 年月日取得
+                var year = d.year();
+                var month = d.month();
+                var date = d.date();
+                console.log(year + '-' + (month + 1) + '-' + date);
+                // 時分秒取得
+                var hour = t.hour();
+                var minute = t.minute();
+                var second = t.second();
+                console.log(hour + ':' + minute + ':' + second);
+                // 日時に変換して戻す
+                return moment([year, month, date, hour, minute, second]).toDate().toUTCString();
+            }
+
             // 勤怠時間情報の登録
             function saveWorkTimeByApex(scope) {
-                console.log(scope.wrapper.workTime);
                 WorkTimeController.saveWorkTime(scope.wrapper.workTime, function(result, event) {
                     if(event.status) {
-                        console.log(result);
                         if (result.errorMessages.length > 0) {
                             scope.errorMessages = result.errorMessages;
                         } else {
@@ -159,13 +209,6 @@
                     $rootScope.$apply();
                 });
             }
-
-            // 時差取得
-            function getTzOff() {
-                var date = new Date();
-                var result = ( date.getHours() - date.getUTCHours() + 24 ) % 24;
-                return result;
-            };
 
             return {
                 init: function(scope, recordId) {

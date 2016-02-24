@@ -21,6 +21,14 @@ public with sharing class LeaveRequestHelper {
         if (String.isNotEmpty(wrapper.description)) {
             leaveRequest.Description__c = wrapper.description;
         }
+        if (String.isNotEmpty(wrapper.requestType)) {
+            leaveRequest.RequestType__c = wrapper.requestType;
+        }
+        if (String.isNotEmpty(wrapper.approvalUser)) {
+            leaveRequest.ApprovalUser__c = wrapper.approvalUser;
+        } else {
+            leaveRequest.ApprovalUser__c = null;
+        }
 
         return leaveRequest;
     }

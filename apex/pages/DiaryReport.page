@@ -6,18 +6,20 @@
         </apex:define>
         <!-- Body -->
         <apex:define name="body">
-            <div class="slds-grid">
-                <!-- Navi -->
-                <nav class="slds-col slds-size--2-of-12 sideMenu">
-                    <c:SitesSideMenu />
-                </nav>
-                <!-- Main -->
-                <main class="slds-col slds-size--10-of-12">
-                    <c:SitesSubHeader title="日報" />
-                    <div ng-app="myApp">
-                        <div ng-view="true" autoscroll="true"></div>
-                    </div>
-                </main>
+            <div xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <div class="slds-grid">
+                    <!-- Navi -->
+                    <nav class="slds-col slds-size--2-of-12 sideMenu">
+                        <c:SitesSideMenu />
+                    </nav>
+                    <!-- Main -->
+                    <main class="slds-col slds-size--10-of-12">
+                        <c:SitesSubHeader title="日報" />
+                        <div ng-app="myApp">
+                            <div ng-view="true" autoscroll="true"></div>
+                        </div>
+                    </main>
+                </div>
             </div>
             <!-- AngularJS -->
             <apex:include pageName="DiaryReportAppJs" />

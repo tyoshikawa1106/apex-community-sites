@@ -15,6 +15,8 @@ public with sharing class WorkTimeDao {
             SELECT
                  Id
                 ,Date__c
+                ,WorkStartTime__c
+                ,WorkEndTime__c
                 ,Description__c
             FROM
                 WorkTime__c
@@ -33,6 +35,8 @@ public with sharing class WorkTimeDao {
             SELECT
                  Id
                 ,Date__c
+                ,WorkStartTime__c
+                ,WorkEndTime__c
                 ,Description__c
             FROM
                 WorkTime__c
