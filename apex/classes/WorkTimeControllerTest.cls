@@ -70,8 +70,8 @@ private class WorkTimeControllerTest {
             
             Test.stopTest();
 
-            System.assertEquals(String.isEmpty(result.recordId), true);
-            System.assertEquals(result.errorMessages.size(), 1);
+            System.assertEquals(String.isNotEmpty(result.recordId), true);
+            System.assertEquals(result.errorMessages.size(), 0);
         }
     }
 
