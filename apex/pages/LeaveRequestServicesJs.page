@@ -13,6 +13,7 @@
                         requestType : '全休',
                         approvalUser : null,
                         approvalUserName : '',
+                        isApproval : false,
                     },
                     leaveDateInput : null,
                     approvalUserList : [],
@@ -32,15 +33,15 @@
         app.factory("LeaveRequestListServices", ["$rootScope", function($rootScope) {
             // 初期処理
             function init(scope) {
-                // 日報情報の初期値取得
+                // 休暇申請情報の初期値取得
                 getDefaultLeaveRequestsByApex(scope);
             }
 
-            // 日報情報の初期値取得
+            // 休暇申請情報の初期値取得
             function getDefaultLeaveRequestsByApex(scope) {
                 LeaveRequestController.getLeaveRequests(function(results, event) {
                     if(event.status) {
-                        // 日報情報に値をセット
+                        // 休暇申請情報に値をセット
                         for (var i = 0; i < results.length; i++) {
                             (function(result) {
                                 scope.leaveRequestList[i] = {
@@ -51,6 +52,7 @@
                                     approvalUser : result.approvalUser,
                                     approvalUserName : result.approvalUserName,
                                     approvalUserPhotoUrl : result.approvalUserPhotoUrl,
+                                    isApproval : result.isApproval,
                                 };
                             })(results[i]);
                         }
@@ -93,11 +95,14 @@
             // 初期処理
             function init(scope, recordId) {
                 if (recordId) {
+                    // 休暇申請情報の初期値取得
                     getDefaultLeaveRequestByApex(scope, recordId);
+                    // 休暇申請情報に紐付く承認履歴情報取得
+                    getProcessInstanceInfoByApex(scope, recordId);
                 }
             }
 
-            // 日報情報の初期値取得
+            // 休暇申請情報の初期値取得
             function getDefaultLeaveRequestByApex(scope, recordId) {
                 LeaveRequestController.getLeaveRequest(recordId, function(result, event) {
                     if(event.status) {
@@ -111,7 +116,21 @@
                 });
             }
 
-            // 日報オブジェクトに値をセット
+            // 休暇申請情報に紐付く承認履歴情報取得
+            function getProcessInstanceInfoByApex(scope, recordId) {
+                scope.approvalInfoList = [];
+                LeaveRequestController.getProcessInstanceInfo(recordId, function(results, event) {
+                    if(event.status) {
+                        scope.approvalInfoList = results;
+                        // Viewに反映
+                        $rootScope.$apply();
+                    } else {
+                        alert(event.message);
+                    }
+                });
+            }
+
+            // 休暇申請オブジェクトに値をセット
             function setLeaveRequest(wrapper, result) {
                 if (result) {
                     if (result.recordId) {
@@ -135,11 +154,12 @@
                     if (result.approvalUserPhotoUrl) {
                         wrapper.approvalUserPhotoUrl = result.approvalUserPhotoUrl;
                     }
+                    wrapper.leaveRequest.isApproval = result.isApproval;
                 }
                 return wrapper;
             }
 
-            // 日報情報の削除
+            // 削除(Apex)
             function deleteLeaveRequestByApex(scope, recordId) {
                 LeaveRequestController.deleteLeaveRequest(recordId, function(result, event) {
                     if(event.status) {
@@ -147,6 +167,28 @@
                     } else {
                         alert(event.message);
                     }
+                });
+            }
+
+            // 承認申請(Apex)
+            function requestApprovalByApex(scope, recordId) {
+                var nextApprovalUserId = scope.wrapper.leaveRequest.approvalUser;
+                LeaveRequestController.requestApprovalByApex(recordId, nextApprovalUserId, function(result, event) {
+                    if(event.status) {
+                        if (result.errorMessages.length > 0) {
+                            scope.errorMessages = result.errorMessages;
+                        } else {
+                            alert('承認申請が実行されました。');
+                            // 休暇申請情報の初期値取得
+                            getDefaultLeaveRequestByApex(scope, recordId);
+                            // 休暇申請情報に紐付く承認履歴情報取得
+                            getProcessInstanceInfoByApex(scope, recordId);
+                        }
+                    } else {
+                        alert(event.message);
+                    }
+                    scope.isLocked = false;
+                    $rootScope.$apply();
                 });
             }
 
@@ -160,7 +202,7 @@
                 saveLeaveRequestByApex(scope);
             }
 
-            // 日報情報の登録
+            // 保存(Apex)
             function saveLeaveRequestByApex(scope) {
                 LeaveRequestController.saveLeaveRequest(scope.wrapper.leaveRequest, function(result, event) {
                     if(event.status) {
@@ -208,6 +250,9 @@
                 },
                 delete: function(scope, recordId) {
                     return deleteLeaveRequestByApex(scope, recordId);
+                },
+                requestApproval: function(scope, recordId) {
+                    return requestApprovalByApex(scope, recordId);
                 },
                 save: function(scope) {
                     return save(scope);

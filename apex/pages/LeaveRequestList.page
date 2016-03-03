@@ -19,6 +19,7 @@
                             <th>{!$ObjectType.LeaveRequest__c.Fields.Date__c.Label}</th>
                             <th>{!$ObjectType.LeaveRequest__c.Fields.RequestType__c.Label}</th>
                             <th>{!$ObjectType.LeaveRequest__c.Fields.ApprovalUser__c.Label}</th>
+                            <th>{!$ObjectType.LeaveRequest__c.Fields.IsApproval__c.Label}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -34,6 +35,13 @@
                             </td>
                             <td>
                                 <span ng-bind="item.approvalUserName" />
+                            </td>
+                            <td>
+                                <div ng-show="item.isApproval">
+                                    <svg aria-hidden="true" class="slds-icon icon__svg slds-icon-action-approval slds-icon--x-small">
+                                        <use xlink:href="/resource/SLDS0122/assets/icons/action-sprite/svg/symbols.svg#approval"></use>
+                                    </svg>
+                                </div>
                             </td>
                             <td class="slds-text-align--right">
                                 <a href="#/edit/{{item.recordId}}" class="slds-button slds-button--brand slds-button--small">編集</a>

@@ -101,6 +101,54 @@
                     <a href="#/" class="slds-button slds-button--neutral">キャンセル</a>
                 </div>
             </form>
+            <!-- 承認履歴 -->
+            <div class="slds-m-top--small">
+                <div class="slds-box white-box">
+                    <h1 class="slds-m-bottom--small">承認履歴</h1>
+                    <div class="slds-scrollable--x">
+                        <table class="mytable slds-table slds-table--bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">
+                                        <span>日付</span>
+                                    </th>
+                                    <th scope="col">
+                                        <span>状況</span>
+                                    </th>
+                                    <th scope="col">
+                                        <span>割り当て先</span>
+                                    </th>
+                                    <th scope="col">
+                                        <span>承認者</span>
+                                    </th>
+                                    <th scope="col">
+                                        <span>コメント</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="approvalInfo in approvalInfoList">
+                                <tr ng-repeat="item in approvalInfo.processInstanceDetails">
+                                    <td>
+                                        <span ng-bind="item.completedDate | date:'yyyy年MM月dd日 hh:mm:ss'" />
+                                    </td>
+                                    <td>
+                                        <span ng-bind="item.stepStatus" />
+                                    </td>
+                                    <td>
+                                        <span ng-bind="item.originalActorUser" />
+                                    </td>
+                                    <td>
+                                        <span ng-bind="item.actorUser" />
+                                    </td>
+                                    <td>
+                                        <span class="textAreaView" ng-bind="item.comment" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </apex:page>

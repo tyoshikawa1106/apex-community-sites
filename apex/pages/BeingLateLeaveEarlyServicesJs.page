@@ -34,7 +34,7 @@
             function getDefaultBeingLateLeaveEarlysByApex(scope) {
                 BeingLateLeaveEarlyController.getBeingLateLeaveEarlys(function(results, event) {
                     if(event.status) {
-                        // 日報情報に値をセット
+                        // 値をセット
                         for (var i = 0; i < results.length; i++) {
                             (function(result) {
                                 scope.beingLateLeaveEarlyList[i] = {
@@ -134,11 +134,11 @@
                 if (scope.wrapper.targetDateInput) {
                     scope.wrapper.beingLateLeaveEarly.targetDate = moment(scope.wrapper.targetDateInput).add(getTzOff(), 'hours').toDate().toUTCString();
                 }
-                // 勤怠時間情報の登録
+                // 登録
                 saveBeingLateLeaveEarlyByApex(scope);
             }
 
-            // 遅刻早退情報の登録
+            // 登録
             function saveBeingLateLeaveEarlyByApex(scope) {
                 console.log(scope.wrapper.workTime);
                 BeingLateLeaveEarlyController.saveBeingLateLeaveEarly(scope.wrapper.beingLateLeaveEarly, function(result, event) {

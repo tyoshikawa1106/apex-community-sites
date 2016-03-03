@@ -70,5 +70,10 @@
             width: 100% !important;
             height: 200px !important;
         }
+
+        .mytable th {
+            background-color: rgba(0, 0, 0, 0.16);
+            color: #FFF;
+        }
     </style>
 </apex:page>

@@ -34,12 +34,72 @@
                         <span class="slds-form-element__static textAreaView" ng-bind="wrapper.leaveRequest.description"></span>
                     </div>
                 </div>
+                <!-- 承認済み -->
+                <div class="slds-form-element slds-has-divider--bottom" ng-show="wrapper.leaveRequest.isApproval">
+                    <span class="slds-form-element__label">承認済み</span>
+                    <div class="slds-form-element__control">
+                        <div class="slds-m-around--small">
+                            <div ng-show="wrapper.leaveRequest.isApproval">
+                                <svg aria-hidden="true" class="slds-icon icon__svg slds-icon-action-approval slds-icon--x-small">
+                                    <use xlink:href="/resource/SLDS0122/assets/icons/action-sprite/svg/symbols.svg#approval"></use>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="slds-m-top--small">
                     <a href="#/edit/{{wrapper.leaveRequest.recordId}}" class="slds-button slds-button--brand">編集</a>
-                    <a ng-click="delete($event, wrapper.leaveRequest.recordId)" class="slds-button slds-button--destructive">削除</a>
+                    <button ng-click="delete($event, wrapper.leaveRequest.recordId)" class="slds-button slds-button--destructive">削除</button>
                     <a href="#/" class="slds-button slds-button--neutral">一覧に戻る</a>
+                    <button ng-click="requestApproval($event, wrapper.leaveRequest.recordId)" ng-if="!wrapper.leaveRequest.isApproval" class="slds-button slds-button--neutral" ng-disabled="isLocked">承認申請</button>
                 </div>
             </form>
+            <!-- 承認履歴 -->
+            <div class="slds-box white-box">
+                <h1 class="slds-m-bottom--small">承認履歴</h1>
+                <div class="slds-scrollable--x">
+                    <table class="mytable slds-table slds-table--bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    <span>日付</span>
+                                </th>
+                                <th scope="col">
+                                    <span>状況</span>
+                                </th>
+                                <th scope="col">
+                                    <span>割り当て先</span>
+                                </th>
+                                <th scope="col">
+                                    <span>承認者</span>
+                                </th>
+                                <th scope="col">
+                                    <span>コメント</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="approvalInfo in approvalInfoList">
+                            <tr ng-repeat="item in approvalInfo.processInstanceDetails">
+                                <td>
+                                    <span ng-bind="item.completedDate | date:'yyyy年MM月dd日 hh:mm:ss'" />
+                                </td>
+                                <td>
+                                    <span ng-bind="item.stepStatus" />
+                                </td>
+                                <td>
+                                    <span ng-bind="item.originalActorUser" />
+                                </td>
+                                <td>
+                                    <span ng-bind="item.actorUser" />
+                                </td>
+                                <td>
+                                    <span class="textAreaView" ng-bind="item.comment" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </apex:page>

@@ -84,7 +84,8 @@ private class LeaveRequestControllerTest {
         System.runAs(testAdminUser) {
 
             LeaveRequest__c leaveRequest = new LeaveRequest__c(
-                Date__c = System.today()
+                 Date__c = System.today()
+                ,ApprovalUser__c = testAdminUser.Id
             );
             LeaveRequestWrapper wrapper = new LeaveRequestWrapper(leaveRequest);
 
@@ -114,6 +115,175 @@ private class LeaveRequestControllerTest {
             LeaveRequestController.deleteLeaveRequest(deleteId);
             
             Test.stopTest();
+        }
+    }
+
+    /**
+     * 休暇申請情報の削除
+     * 値あり
+     */
+    static testMethod void deleteLeaveRequestTest2() {
+        
+        System.runAs(testAdminUser) {
+
+            LeaveRequest__c leaveRequest = new LeaveRequest__c(
+                 Date__c = System.today()
+                ,ApprovalUser__c = testAdminUser.Id
+            );
+            insert leaveRequest;
+
+            String deleteId = leaveRequest.Id;
+
+            Test.startTest();
+            
+            LeaveRequestController.deleteLeaveRequest(deleteId);
+            
+            Test.stopTest();
+
+            Integer resultCnt = [SELECT COUNT() FROM LeaveRequest__c WHERE Id =: leaveRequest.Id LIMIT 1];
+            System.assertEquals(resultCnt, 0);
+        }
+    }
+
+    /**
+     * 休暇申請情報の削除
+     */
+    static testMethod void getApprovalUsersTest1() {
+        
+        System.runAs(testAdminUser) {
+
+            String userName = '';
+
+            Test.startTest();
+            
+            List<User> results = LeaveRequestController.getApprovalUsers(userName);
+            
+            Test.stopTest();
+
+            System.assertEquals(results.isEmpty(), false);
+        }
+    }
+
+    /**
+     * 承認履歴の情報取得
+     */
+    static testMethod void getProcessInstanceInfoTest1() {
+        
+        System.runAs(testAdminUser) {
+
+            String recordId = '';
+
+            Test.startTest();
+            
+            List<LeaveRequestProcessInstanceInfo> results = LeaveRequestController.getProcessInstanceInfo(recordId);
+            
+            Test.stopTest();
+
+            System.assertEquals(results.isEmpty(), true);
+        }
+    }
+
+    /**
+     * 休暇申請情報の承認申請
+     * recordIdなし
+     */
+    static testMethod void requestApprovalByApexTest1() {
+        
+        System.runAs(testAdminUser) {
+
+            String recordId = '';
+            String nextApproverId = '';
+
+            Test.startTest();
+            
+            RemoteActionResult result = LeaveRequestController.requestApprovalByApex(recordId, nextApproverId);
+            
+            Test.stopTest();
+
+            System.assertEquals(result.errorMessages.isEmpty(), false);
+        }
+    }
+
+    /**
+     * 休暇申請情報の承認申請
+     * nextApproverIdなし
+     */
+    static testMethod void requestApprovalByApexTest2() {
+        
+        System.runAs(testAdminUser) {
+
+            LeaveRequest__c leaveRequest = new LeaveRequest__c(
+                 Date__c = System.today()
+                ,ApprovalUser__c = testAdminUser.Id
+            );
+            insert leaveRequest;
+
+            String recordId = leaveRequest.Id;
+            String nextApproverId = '';
+
+            Test.startTest();
+            
+            RemoteActionResult result = LeaveRequestController.requestApprovalByApex(recordId, nextApproverId);
+            
+            Test.stopTest();
+
+            System.assertEquals(result.errorMessages.isEmpty(), true);
+        }
+    }
+
+    /**
+     * 休暇申請情報の承認申請
+     * nextApproverIdあり
+     */
+    static testMethod void requestApprovalByApexTest3() {
+        
+        System.runAs(testAdminUser) {
+
+            LeaveRequest__c leaveRequest = new LeaveRequest__c(
+                 Date__c = System.today()
+                ,ApprovalUser__c = testAdminUser.Id
+            );
+            insert leaveRequest;
+
+            String recordId = leaveRequest.Id;
+            String nextApproverId = testAdminUser.Id;
+
+            Test.startTest();
+            
+            RemoteActionResult result = LeaveRequestController.requestApprovalByApex(recordId, nextApproverId);
+            
+            Test.stopTest();
+
+            System.assertEquals(result.errorMessages.isEmpty(), true);
+        }
+    }
+
+    /**
+     * 休暇申請情報の承認申請
+     * レコードロック
+     */
+    static testMethod void requestApprovalByApexTest4() {
+        
+        System.runAs(testAdminUser) {
+
+            LeaveRequest__c leaveRequest = new LeaveRequest__c(
+                 Date__c = System.today()
+                ,ApprovalUser__c = testAdminUser.Id
+            );
+            insert leaveRequest;
+            // レコードロック
+            Approval.LockResult lockResult = Approval.lock(leaveRequest, false);
+
+            String recordId = leaveRequest.Id;
+            String nextApproverId = testAdminUser.Id;
+
+            Test.startTest();
+            
+            RemoteActionResult result = LeaveRequestController.requestApprovalByApex(recordId, nextApproverId);
+            
+            Test.stopTest();
+
+            System.assertEquals(result.errorMessages.isEmpty(), false);
         }
     }
 }

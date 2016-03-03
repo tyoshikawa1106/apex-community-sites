@@ -56,18 +56,28 @@
                     $scope.errorMessages = [];
                     $scope.wrapper = fieldHelper.getWrapper();
                     $scope.isLocked =　false;
+                    $scope.approvalInfoList = [];
 
                     // 初期処理
                     helper.init($scope, $routeParams.id);
 
                     // 削除ボタン
-                    $scope.delete = function(event) {
+                    $scope.delete = function(event, recordId) {
                         event.preventDefault();
                         // ロック
                         $scope.isLocked = true;
                         // 削除処理実行
-                        helper.delete($scope, $routeParams.id);
+                        helper.delete($scope, recordId);
                     };
+
+                    // 承認申請ボタン
+                    $scope.requestApproval = function(event, recordId) {
+                        event.preventDefault();
+                        // ロック
+                        $scope.isLocked = true;
+                        // 承認申請処理実行
+                        helper.requestApproval($scope, recordId);
+                    }
                 } catch (e) {
                     throw e;
                 }
@@ -80,6 +90,7 @@
                     $scope.errorMessages = [];
                     $scope.wrapper = fieldHelper.getWrapper();
                     $scope.isLocked = false;
+                    $scope.approvalInfoList = [];
 
                     // 初期処理
                     helper.init($scope, $routeParams.id);

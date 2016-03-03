@@ -29,7 +29,7 @@
                 </div>
                 <div class="slds-m-top--small">
                     <a href="#/edit/{{wrapper.DiaryReport__c.Id}}" class="slds-button slds-button--brand">編集</a>
-                    <a ng-click="delete($event, wrapper.DiaryReport__c.Id)" class="slds-button slds-button--destructive">削除</a>
+                    <button ng-click="delete($event, wrapper.DiaryReport__c.Id)" class="slds-button slds-button--destructive">削除</button>
                     <a href="#/" class="slds-button slds-button--neutral">一覧に戻る</a>
                 </div>
             </form>

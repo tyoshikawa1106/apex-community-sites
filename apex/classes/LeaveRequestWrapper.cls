@@ -7,6 +7,7 @@ public with sharing class LeaveRequestWrapper {
     public String approvalUser {get; set;}
     public String approvalUserName {get; set;}
     public String approvalUserPhotoUrl {get; set;}
+    public Boolean isApproval {get; set;}
 
     /**
      * コンストラクタ
@@ -19,6 +20,7 @@ public with sharing class LeaveRequestWrapper {
         this.approvalUser = '';
         this.approvalUserName = '';
         this.approvalUserPhotoUrl = '';
+        this.isApproval = false;
     }
 
     /**
@@ -32,5 +34,6 @@ public with sharing class LeaveRequestWrapper {
         this.approvalUser = leaveRequest.ApprovalUser__c;
         this.approvalUserName = leaveRequest.ApprovalUser__r.Name;
         this.approvalUserPhotoUrl = leaveRequest.ApprovalUser__r.SmallPhotoUrl;
+        this.isApproval = leaveRequest.IsApproval__c;
     }
 }
