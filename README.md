@@ -38,8 +38,8 @@
 ## SitesUnauthorized
 <img src="http://f.st-hatena.com/images/fotolife/t/tyoshikawa1106/20160308/20160308190308.png" />
 
+## SitesFileNotFound
+<img src="http://f.st-hatena.com/images/fotolife/t/tyoshikawa1106/20160308/20160308190412.png" />
+
 ## SitesException
 <img src="http://f.st-hatena.com/images/fotolife/t/tyoshikawa1106/20160308/20160308185832.png" />
-
-## SitesFileNotFound
-<img src="http://f.st-hatena.com/images/fotolife/t/tyoshikawa1106/20160308/20160308185831.png" />
