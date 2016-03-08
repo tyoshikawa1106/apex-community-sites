@@ -102,7 +102,7 @@
                 </div>
             </form>
             <!-- 承認履歴 -->
-            <div class="slds-m-top--small">
+            <div class="slds-m-top--small" ng-show="!!approvalInfoList.length">
                 <div class="slds-box white-box">
                     <h1 class="slds-m-bottom--small">承認履歴</h1>
                     <div class="slds-scrollable--x">

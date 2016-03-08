@@ -55,7 +55,7 @@
                 </div>
             </form>
             <!-- 承認履歴 -->
-            <div class="slds-box white-box">
+            <div class="slds-box white-box" ng-show="!!approvalInfoList.length">
                 <h1 class="slds-m-bottom--small">承認履歴</h1>
                 <div class="slds-scrollable--x">
                     <table class="mytable slds-table slds-table--bordered">

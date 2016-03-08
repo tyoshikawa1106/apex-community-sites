@@ -145,7 +145,6 @@
 
                 // 対象日付取得
                 var targetDate = moment(scope.wrapper.workDateInput);
-                console.log('targetDate = ' + targetDate.format("YYYY-MM-DD HH:mm:ss"));
 
                 // 日付取得
                 scope.wrapper.workTime.workDate = getDate(targetDate);
@@ -153,7 +152,6 @@
                 if (scope.wrapper.startTimeInput) {
                     // 時間取得
                     var startTime = moment(scope.wrapper.startTimeInput);
-                    console.log('startTime = ' + startTime.format("HH:mm:ss"));
                     // 日時に変換してセット
                     scope.wrapper.workTime.startTime = getDateTime(targetDate, startTime);
                 }
@@ -161,7 +159,6 @@
                 if (scope.wrapper.endTimeInput) {
                     // 時間取得
                     var endTime = moment(scope.wrapper.endTimeInput);
-                    console.log('endTime = ' + endTime.format("HH:mm:ss"));
                     // 日時に変換してセット
                     scope.wrapper.workTime.endTime = getDateTime(targetDate, endTime);
                 }
@@ -182,12 +179,10 @@
                 var year = d.year();
                 var month = d.month();
                 var date = d.date();
-                console.log(year + '-' + (month + 1) + '-' + date);
                 // 時分秒取得
                 var hour = t.hour();
                 var minute = t.minute();
                 var second = t.second();
-                console.log(hour + ':' + minute + ':' + second);
                 // 日時に変換して戻す
                 return moment([year, month, date, hour, minute, second]).toDate().toUTCString();
             }

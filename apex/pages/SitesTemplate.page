@@ -3,6 +3,7 @@
         <head>
             <!-- Title -->
             <title>
+                <apex:outputText value="Force.com パートナーサイト - " />
                 <apex:insert name="title" />
             </title>
             <!-- Meta -->
@@ -17,7 +18,7 @@
             <!-- Chart.js -->
             <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js" />
             <!-- Lightning Design System -->
-            <apex:stylesheet value="{!URLFOR($Resource.SLDS0122, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS100, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
             <!-- Common CSS -->
             <apex:include pageName="SitesCommonCss" />
         </head>
@@ -31,7 +32,7 @@
                 <apex:insert name="body"/>
                 <!-- Footer -->
                 <apex:insert name="footer">
-                    <!-- <c:SitesFooter /> -->
+                    <c:SitesFooter />
                 </apex:insert>
             </div>
         </body>

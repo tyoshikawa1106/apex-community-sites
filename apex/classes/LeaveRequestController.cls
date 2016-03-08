@@ -7,7 +7,7 @@ public with sharing class LeaveRequestController {
      * コンストラクタ
      */
     public LeaveRequestController() {
-        
+        System.debug(UserInfo.getUserType());
     }
 
     /**
@@ -97,6 +97,10 @@ public with sharing class LeaveRequestController {
      */
     @RemoteAction
     public static List<LeaveRequestProcessInstanceInfo> getProcessInstanceInfo(String recordId) {
+        // 一般ユーザ以外の場合は取得不可
+        if (!CommonSitesUtil.isUserTypeStandard()) {
+            return new List<LeaveRequestProcessInstanceInfo>();
+        }
         // processInstance取得
         List<ProcessInstance> processInstances = dao.getProcessInstances(recordId);
         // ユーザID情報取得

@@ -36,6 +36,10 @@
                         <div class="slds-m-top--medium">
                             <apex:commandLink value="ログイン" action="{!doLogin}" styleClass="slds-button slds-button--brand" reRender="form" />
                         </div>
+                        <!-- パスワードリセット -->
+                        <div class="slds-m-top--small">
+                            <a href="{!$Page.PartnerForgotPassword}">パスワードをお忘れですか?</a>
+                        </div>
                     </div>
                 </apex:form>
             </div>
