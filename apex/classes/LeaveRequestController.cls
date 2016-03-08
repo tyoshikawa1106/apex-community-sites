@@ -80,8 +80,26 @@ public with sharing class LeaveRequestController {
      * 休暇申請情報の削除
      */
     @RemoteAction
-    public static void deleteLeaveRequest(String deleteId) {
-        delete dao.getDeleteLeaveRequests(deleteId);
+    public static RemoteActionResult deleteLeaveRequest(String deleteId) {
+        RemoteActionResult result = new RemoteActionResult();
+
+        try {
+            // レコードロック判定
+            if (helper.checkRecordLocked(deleteId)) {
+                result.errorMessages.add('レコードがロックされています。このレコードは承認申請済みです。');
+                return result;
+            }
+            // 削除
+            delete dao.getDeleteLeaveRequests(deleteId);
+        } catch(DmlException e) {
+            result.errorMessages.add(e.getDmlMessage(0));
+            return result;
+        } catch(Exception e) {
+            result.errorMessages.add(e.getMessage());
+            return result;
+        }
+
+        return result;
     }
 
     /**

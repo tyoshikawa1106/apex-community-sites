@@ -56,11 +56,11 @@
                                 };
                             })(results[i]);
                         }
-                        // Viewに反映
-                        $rootScope.$apply();
                     } else {
-                        alert(event.message);
+                        scope.errorMessages = event.message;
                     }
+                    // Viewに反映
+                    $rootScope.$apply();
                 });
             }
 
@@ -68,15 +68,19 @@
             function deleteLeaveRequestByApex(scope, recordId, index) {
                 LeaveRequestController.deleteLeaveRequest(recordId, function(result, event) {
                     if(event.status) {
-                        // リストから除外
-                        scope.leaveRequestList.splice(index, 1);
-                        // ロック解除
-                        scope.isLocked = false;
-                        // Viewに反映
-                        $rootScope.$apply();
+                        if (result.errorMessages.length > 0) {
+                            scope.errorMessages = result.errorMessages;
+                        } else {
+                            // リストから除外
+                            scope.leaveRequestList.splice(index, 1);
+                        }
                     } else {
-                        alert(event.message);
+                        scope.errorMessages = event.message;
                     }
+                    // ロック解除
+                    scope.isLocked = false;
+                    // Viewに反映
+                    $rootScope.$apply();
                 });
             }
 
@@ -108,11 +112,11 @@
                     if(event.status) {
                         // 結果をセット
                         scope.wrapper = setLeaveRequest(scope.wrapper, result);
-                        // Viewに反映
-                        $rootScope.$apply();
                     } else {
-                        alert(event.message);
+                        scope.errorMessages = event.message;
                     }
+                    // Viewに反映
+                    $rootScope.$apply();
                 });
             }
 
@@ -122,11 +126,11 @@
                 LeaveRequestController.getProcessInstanceInfo(recordId, function(results, event) {
                     if(event.status) {
                         scope.approvalInfoList = results;
-                        // Viewに反映
-                        $rootScope.$apply();
                     } else {
-                        alert(event.message);
+                        scope.errorMessages = event.message;
                     }
+                    // Viewに反映
+                    $rootScope.$apply();
                 });
             }
 
@@ -163,10 +167,16 @@
             function deleteLeaveRequestByApex(scope, recordId) {
                 LeaveRequestController.deleteLeaveRequest(recordId, function(result, event) {
                     if(event.status) {
-                        location.href = "#/";
+                        if (result.errorMessages.length > 0) {
+                            scope.errorMessages = result.errorMessages;
+                        } else {
+                            location.href = "#/";
+                        }
                     } else {
-                        alert(event.message);
+                        scope.errorMessages = event.message;
                     }
+                    scope.isLocked = false;
+                    $rootScope.$apply();
                 });
             }
 
@@ -185,7 +195,7 @@
                             getProcessInstanceInfoByApex(scope, recordId);
                         }
                     } else {
-                        alert(event.message);
+                        scope.errorMessages = event.message;
                     }
                     scope.isLocked = false;
                     $rootScope.$apply();
@@ -213,7 +223,7 @@
                             location.href = "#/view/" + result.recordId;
                         }
                     } else {
-                        alert(event.message);
+                        scope.errorMessages = event.message;
                     }
                     scope.isLocked = false;
                     $rootScope.$apply();
@@ -231,7 +241,7 @@
                     if(event.status) {
                         scope.wrapper.approvalUserList = results;
                     } else {
-                        alert(event.message);
+                        scope.errorMessages = event.message;
                     }
                     $rootScope.$apply();
                 });
