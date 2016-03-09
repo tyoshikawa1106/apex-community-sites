@@ -55,10 +55,8 @@ public with sharing class WorkTimeController {
     public static RemoteActionResult saveWorkTime(WorkTimeWrapper wrapper) {
         RemoteActionResult result = new RemoteActionResult();
         try {
-            System.debug(wrapper);
             // 勤怠レコード作成
             WorkTime__c workTime = helper.setWorkTime(wrapper);
-            System.debug(workTime);
             // 登録処理実行
             upsert workTime;
             result.recordId = workTime.Id;
@@ -77,7 +75,18 @@ public with sharing class WorkTimeController {
      * 勤怠情報の削除
      */
     @RemoteAction
-    public static void deleteWorkTime(String deleteId) {
-        delete dao.getDeleteWorkTimes(deleteId);
+    public static RemoteActionResult deleteWorkTime(String deleteId) {
+        RemoteActionResult result = new RemoteActionResult();
+        try {
+            delete dao.getDeleteWorkTimes(deleteId);
+        } catch(DmlException e) {
+            result.errorMessages.add(e.getDmlMessage(0));
+            return result;
+        } catch(Exception e) {
+            result.errorMessages.add(e.getMessage());
+            return result;
+        }
+        
+        return result;
     }
 }

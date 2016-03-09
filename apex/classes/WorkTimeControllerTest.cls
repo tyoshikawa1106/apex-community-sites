@@ -111,9 +111,11 @@ private class WorkTimeControllerTest {
 
             Test.startTest();
             
-            WorkTimeController.deleteWorkTime(deleteId);
+            RemoteActionResult result = WorkTimeController.deleteWorkTime(deleteId);
             
             Test.stopTest();
+
+            System.assertEquals(result.errorMessages.size(), 0);
         }
     }
 }

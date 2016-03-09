@@ -4,7 +4,6 @@
         <apex:define name="title">
             <apex:outputText value="ページが見つかりません (404)" />
         </apex:define>
-    
         <!-- Body -->
         <apex:define name="body">
             <div id="pageBody">

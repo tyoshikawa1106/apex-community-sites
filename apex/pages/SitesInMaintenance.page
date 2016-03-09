@@ -4,7 +4,6 @@
         <apex:define name="title">
             <apex:outputText value="メンテナンス (500/503)" />
         </apex:define>
-    
         <!-- Body -->
         <apex:define name="body">
             <div id="pageBody">

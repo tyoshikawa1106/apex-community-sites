@@ -112,9 +112,11 @@ private class LeaveRequestControllerTest {
 
             Test.startTest();
             
-            LeaveRequestController.deleteLeaveRequest(deleteId);
+            RemoteActionResult result = LeaveRequestController.deleteLeaveRequest(deleteId);
             
             Test.stopTest();
+
+            System.assertEquals(result.errorMessages.size(), 1);
         }
     }
 
@@ -136,12 +138,13 @@ private class LeaveRequestControllerTest {
 
             Test.startTest();
             
-            LeaveRequestController.deleteLeaveRequest(deleteId);
+            RemoteActionResult result = LeaveRequestController.deleteLeaveRequest(deleteId);
             
             Test.stopTest();
 
             Integer resultCnt = [SELECT COUNT() FROM LeaveRequest__c WHERE Id =: leaveRequest.Id LIMIT 1];
             System.assertEquals(resultCnt, 0);
+            System.assertEquals(result.errorMessages.size(), 0);
         }
     }
 

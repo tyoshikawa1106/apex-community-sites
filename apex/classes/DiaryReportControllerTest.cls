@@ -111,9 +111,11 @@ private class DiaryReportControllerTest {
 
             Test.startTest();
             
-            DiaryReportController.deleteDiaryReport(deleteId);
+            RemoteActionResult result = DiaryReportController.deleteDiaryReport(deleteId);
             
             Test.stopTest();
+
+            System.assertEquals(result.errorMessages.size(), 0);
         }
     }
 }

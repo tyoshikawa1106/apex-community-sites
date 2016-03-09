@@ -111,9 +111,11 @@ private class BeingLateLeaveEarlyControllerTest {
 
             Test.startTest();
             
-            BeingLateLeaveEarlyController.deleteBeingLateLeaveEarly(deleteId);
+            RemoteActionResult result = BeingLateLeaveEarlyController.deleteBeingLateLeaveEarly(deleteId);
             
             Test.stopTest();
+
+            System.assertEquals(result.errorMessages.size(), 0);
         }
     }
 }

@@ -45,11 +45,11 @@
                                 };  
                             })(results[i]);
                         }
-                        // Viewに反映
-                        $rootScope.$apply();
                     } else {
-                        alert(event.message);
+                        scope.errorMessages = event.message;
                     }
+                    // Viewに反映
+                    $rootScope.$apply();
                 });
             }
 
@@ -59,13 +59,13 @@
                     if(event.status) {
                         // リストから除外
                         scope.diaryReportList.splice(index, 1);
-                        // ロック解除
-                        scope.isLocked = false;
-                        // Viewに反映
-                        $rootScope.$apply();
                     } else {
-                        alert(event.message);
+                        scope.errorMessages = event.message;
                     }
+                    // ロック解除
+                    scope.isLocked = false;
+                    // Viewに反映
+                    $rootScope.$apply();
                 });
             }
 
@@ -94,11 +94,11 @@
                     if(event.status) {
                         // 結果をセット
                         scope.wrapper = setDiaryReport(scope.wrapper, result);
-                        // Viewに反映
-                        $rootScope.$apply();
                     } else {
-                        alert(event.message);
+                        scope.errorMessages = event.message;
                     }
+                    scope.isLocked = false;
+                    $rootScope.$apply();
                 });
             }
 
@@ -125,10 +125,16 @@
             function deleteDiaryReportByApex(scope, recordId) {
                 DiaryReportController.deleteDiaryReport(recordId, function(result, event) {
                     if(event.status) {
-                        location.href = "#/";
+                        if (result.errorMessages.length > 0) {
+                            scope.errorMessages = result.errorMessages;
+                        } else {
+                            location.href = "#/";
+                        }
                     } else {
-                        alert(event.message);
+                        scope.errorMessages = event.message;
                     }
+                    scope.isLocked = false;
+                    $rootScope.$apply();
                 });
             }
 
@@ -153,7 +159,7 @@
                             location.href = "#/view/" + result.recordId;
                         }
                     } else {
-                        alert(event.message);
+                        scope.errorMessages = event.message;
                     }
                     scope.isLocked = false;
                     $rootScope.$apply();

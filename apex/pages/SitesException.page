@@ -4,7 +4,6 @@
         <apex:define name="title">
             <apex:outputText value="システムエラー" />
         </apex:define>
-    
         <!-- Body -->
         <apex:define name="body">
             <div id="pageBody">

@@ -7,7 +7,7 @@ public with sharing class LeaveRequestController {
      * コンストラクタ
      */
     public LeaveRequestController() {
-        System.debug(UserInfo.getUserType());
+        
     }
 
     /**

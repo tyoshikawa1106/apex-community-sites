@@ -75,7 +75,18 @@ public with sharing class BeingLateLeaveEarlyController {
      * 勤怠情報の削除
      */
     @RemoteAction
-    public static void deleteBeingLateLeaveEarly(String deleteId) {
-        delete dao.getDeleteBeingLateLeaveEarlys(deleteId);
+    public static RemoteActionResult deleteBeingLateLeaveEarly(String deleteId) {
+        RemoteActionResult result = new RemoteActionResult();
+        try {
+            delete dao.getDeleteBeingLateLeaveEarlys(deleteId);
+        } catch(DmlException e) {
+            result.errorMessages.add(e.getDmlMessage(0));
+            return result;
+        } catch(Exception e) {
+            result.errorMessages.add(e.getMessage());
+            return result;
+        }
+        
+        return result;
     }
 }

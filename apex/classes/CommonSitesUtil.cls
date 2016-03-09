@@ -15,4 +15,12 @@ public with sharing class CommonSitesUtil {
         String userType = UserInfo.getUserType();
         return userType.equals('Guest') ? null : Page.Home;
     }
+
+    /**
+     * ユーザタイプの判定(Standard)
+     */
+    public static Boolean isUserTypeStandard() {
+        String userType = UserInfo.getUserType();
+        return userType.equals('Standard') ? true : false;
+    }
 }

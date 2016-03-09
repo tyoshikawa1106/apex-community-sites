@@ -61,7 +61,19 @@ public with sharing class DiaryReportController {
      * 日報情報の削除
      */
     @RemoteAction
-    public static void deleteDiaryReport(String deleteId) {
-        delete dao.getDeleteDiaryReports(deleteId);
+    public static RemoteActionResult deleteDiaryReport(String deleteId) {
+        RemoteActionResult result = new RemoteActionResult();
+        
+        try {
+            delete dao.getDeleteDiaryReports(deleteId);
+        } catch(DmlException e) {
+            result.errorMessages.add(e.getDmlMessage(0));
+            return result;
+        } catch(Exception e) {
+            result.errorMessages.add(e.getMessage());
+            return result;
+        }
+        
+        return result;
     }
 }
