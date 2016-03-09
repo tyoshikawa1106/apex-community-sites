@@ -1,4 +1,8 @@
 # apex-partner-sites
+- コミュニティユーザが利用するためのForce.comサイトのサンプル
+- CSSはLightning Design Systemを利用
+- RemoteActionによるJavaScript Remoting処理を中心に実装
+
 ## Demo Video
 - <a href="https://www.youtube.com/watch?v=sJZ_P4To6l8">Force.com Demo #110 - JavaScript Remoting Input DateTime</a>
 - <a href="https://www.youtube.com/watch?v=Bue5-_RrX50">Force.com Demo #111 - JavaScript Remoting Input Lookup</a>
