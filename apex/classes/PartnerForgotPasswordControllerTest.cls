@@ -24,7 +24,7 @@ private class PartnerForgotPasswordControllerTest {
     /**
      * パスワードリセット
      */
-    static testMethod void doPasswordResetTest1() {
+    static testMethod void resetPasswordTest1() {
         
         System.runAs(testAdminUser) {
 
@@ -32,7 +32,7 @@ private class PartnerForgotPasswordControllerTest {
             
             PartnerForgotPasswordController cls = new PartnerForgotPasswordController();
             cls.userId = 'salesforcedevjp@example.com';
-            PageReference result = cls.doPasswordReset();
+            PageReference result = cls.resetPassword();
             
             Test.stopTest();
 
@@ -44,7 +44,7 @@ private class PartnerForgotPasswordControllerTest {
     /**
      * パスワードリセット
      */
-    static testMethod void doPasswordResetTest2() {
+    static testMethod void resetPasswordTest2() {
         
         System.runAs(testAdminUser) {
 
@@ -52,7 +52,7 @@ private class PartnerForgotPasswordControllerTest {
             
             PartnerForgotPasswordController cls = new PartnerForgotPasswordController();
             cls.userId = '';
-            PageReference result = cls.doPasswordReset();
+            PageReference result = cls.resetPassword();
             
             Test.stopTest();
 
