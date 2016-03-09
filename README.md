@@ -1,4 +1,9 @@
 # apex-partner-sites
+## Demo Video
+- <a href="https://www.youtube.com/watch?v=sJZ_P4To6l8">Force.com Demo #110 - JavaScript Remoting Input DateTime</a>
+- <a href="https://www.youtube.com/watch?v=Bue5-_RrX50">Force.com Demo #111 - JavaScript Remoting Input Lookup</a>
+- <a href="https://www.youtube.com/watch?v=PwdluptAr-c">Force.com Demo #112 - JavaScript Remoting Approval Request</a>
+
 ## PartnerLogin
 <img src="http://f.st-hatena.com/images/fotolife/t/tyoshikawa1106/20160216/20160216211754.png" />
 
