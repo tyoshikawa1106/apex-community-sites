@@ -1,0 +1,47 @@
+<apex:page showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false" id="pg">
+    <html lang="ja" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <head>
+            <!-- Title -->
+            <title>
+                <apex:outputText value="Force.com パートナーサイト - " />
+                <apex:insert name="title" />
+            </title>
+            <!-- Meta -->
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <!-- AngularJS -->
+            <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular.min.js" />
+            <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-route.js" />
+            <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-messages.js" />
+            <!-- moment.js -->
+            <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js" />
+            <!-- Chart.js -->
+            <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js" />
+            <!-- Lightning Design System -->
+            <apex:stylesheet value="{!URLFOR($Resource.SLDS100, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+            <!-- Common CSS -->
+            <apex:include pageName="SitesCommonCss" />
+        </head>
+        <body>
+            <div class="slds" id="vf-page">
+                <!-- Header -->
+                <apex:insert name="header">
+                    <c:SitesHeader />
+                </apex:insert>
+                <!-- Body -->
+                <div class="slds-grid">
+                    <nav class="slds-col slds-size--2-of-12 sideMenu">
+                        <c:SitesSideMenu />
+                    </nav>
+                    <main class="slds-col slds-size--10-of-12">
+                        <apex:insert name="body"/>
+                    </main>
+                </div>
+                <!-- Footer -->
+                <apex:insert name="footer">
+                    <c:SitesFooter />
+                </apex:insert>
+            </div>
+        </body>
+    </html>
+</apex:page>

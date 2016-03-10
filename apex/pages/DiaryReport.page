@@ -1,25 +1,15 @@
 <apex:page docType="html-5.0" controller="DiaryReportController" showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false" action="{!init}" id="pg">
-    <apex:composition template="SitesTemplate">
+    <apex:composition template="PartnerTemplate">
         <!-- Title -->
         <apex:define name="title">
             <apex:outputText value="日報" />
         </apex:define>
         <!-- Body -->
         <apex:define name="body">
-            <div xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <div class="slds-grid">
-                    <!-- Navi -->
-                    <nav class="slds-col slds-size--2-of-12 sideMenu">
-                        <c:SitesSideMenu />
-                    </nav>
-                    <!-- Main -->
-                    <main class="slds-col slds-size--10-of-12">
-                        <c:SitesSubHeader title="日報" />
-                        <div ng-app="myApp">
-                            <div ng-view="true" autoscroll="true"></div>
-                        </div>
-                    </main>
-                </div>
+            <!-- Main -->
+            <c:SitesSubHeader title="日報" />
+            <div ng-app="myApp">
+                <div ng-view="true" autoscroll="true"></div>
             </div>
             <!-- AngularJS -->
             <apex:include pageName="DiaryReportAppJs" />
